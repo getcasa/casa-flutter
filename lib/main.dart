@@ -7,6 +7,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login',
+      theme: ThemeData(fontFamily: 'Manjari'),
       home: MyCustomForm(),
     );
   }
@@ -41,22 +42,24 @@ class _MyCustomFormState extends State<MyCustomForm> {
         title: Text('Login'),
       ),
       body: Center(
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
               controller: emailController,
               autofocus: true,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                labelText: 'Email'
+                labelText: 'Email',
+                border: OutlineInputBorder(),
               ),
             ),
             TextField(
               controller: passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password'
+                labelText: 'Password',
+                border: OutlineInputBorder(),
               ),
             ),
             FlatButton(
