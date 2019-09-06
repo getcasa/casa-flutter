@@ -6,8 +6,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login',
-      theme: ThemeData(fontFamily: 'Manjari'),
+      title: 'Casa',
+      theme: ThemeData(
+        fontFamily: 'Manjari',
+        primaryColor: Color.fromRGBO(255, 177, 66, 1),
+        accentColor: Color.fromRGBO(255, 177, 66, 1),
+      ),
       home: MyCustomForm(),
     );
   }
@@ -38,40 +42,67 @@ class _MyCustomFormState extends State<MyCustomForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: emailController,
-              autofocus: true,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            FlatButton(
-              onPressed: () {
-                // Get call to API
-              },
-              child: Text(
-                "Sign In",
-              ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 60.0),
+            child: Text(
+              'Welcome\nto',
+              style: TextStyle(fontFamily: 'Manjari', fontSize: 50),
             )
-          ],
-        ),
+          ),
+          Text(
+            'Casa',
+            style: TextStyle(fontFamily: 'Manjari', fontSize: 50, color: Theme.of(context).accentColor),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Material(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: emailController,
+                  autofocus: true,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              elevation: 20.0,
+              shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Material(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              elevation: 20.0,
+              shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            ),
+          ),
+          FlatButton(
+            onPressed: () {
+              // Get call to API
+            },
+            child: Text(
+              "Sign In",
+            ),
+          )
+        ],
       ),
     );
   }
