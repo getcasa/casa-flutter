@@ -44,60 +44,67 @@ class _MyCustomFormState extends State<MyCustomForm> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
-          top: 60.0,
           left: 20.0,
           right: 20.0
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Align(
+            Container(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Welcome\nto',
-                style: TextStyle(fontFamily: 'Manjari', fontSize: 50),
+                style: TextStyle(fontSize: 50),
               ),
             ),
-            Align(
+            Container(
               alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(bottom: 30.0),
               child: Text(
                 'Casa',
-                style: TextStyle(fontFamily: 'Manjari', fontSize: 50, color: Theme.of(context).accentColor),
+                style: TextStyle(fontSize: 50, color: Theme.of(context).accentColor),
               ),
             ),
-            Material(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: emailController,
-                  autofocus: true,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    border: InputBorder.none,
+            Container(
+              margin: EdgeInsets.only(bottom: 20.0),
+              child: Material(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: emailController,
+                    autofocus: true,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
+                elevation: 20.0,
+                shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
               ),
-              elevation: 20.0,
-              shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
-            Material(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    border: InputBorder.none,
+            Container(
+              margin: EdgeInsets.only(bottom: 20.0),
+              child: Material(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
+                elevation: 20.0,
+                shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+                borderRadius: BorderRadius.all(Radius.circular(8.0)),
               ),
-              elevation: 20.0,
-              shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
-            Align(
+            Container(
               alignment: Alignment.centerRight,
               child: Container(
                 width: 60.0,
