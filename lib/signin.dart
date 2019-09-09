@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import 'home.dart';
 
 // Define a custom Form widget.
 class SignInPage extends StatefulWidget {
   @override
+
   _SignInPageState createState() => _SignInPageState();
 }
 
@@ -15,6 +18,8 @@ class _SignInPageState extends State<SignInPage> {
   // of the TextField.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>(); 
+  SharedPreferences prefs;
 
   @override
   void dispose() {
@@ -25,8 +30,24 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   @override
+  initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((_prefs) {
+      prefs = _prefs;
+      if (prefs.getString('token') != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+        return;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Padding(
         padding: EdgeInsets.only(
           left: 20.0,
@@ -97,10 +118,16 @@ class _SignInPageState extends State<SignInPage> {
                 child: Material(
                   child: FlatButton(
                     onPressed: () async {
-                      var url = 'http://example.com/whatsit/create';
-                      var response = await http.post(url, body: {'name': 'doodle', 'color': 'blue'});
-                      print('Response status: ${response.statusCode}');
-                      print('Response body: ${response.body}');
+                      var url = 'http://192.168.1.46:3000/v1/signin';
+                      var response = await http.post(url, body: {'email': emailController.text, 'password': passwordController.text});
+                      var parsedJson = json.decode(response.body);
+                      if (response.statusCode != 200) {
+                        final snackBar = SnackBar(content: Text(parsedJson['message']));
+                        _scaffoldKey.currentState.showSnackBar(snackBar);
+                        return;
+                      }
+                      
+                      await prefs.setString('token', parsedJson['message']);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),
