@@ -42,22 +42,29 @@ class _MyCustomFormState extends State<MyCustomForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 60.0),
-            child: Text(
-              'Welcome\nto',
-              style: TextStyle(fontFamily: 'Manjari', fontSize: 50),
-            )
-          ),
-          Text(
-            'Casa',
-            style: TextStyle(fontFamily: 'Manjari', fontSize: 50, color: Theme.of(context).accentColor),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Material(
+      body: Padding(
+        padding: EdgeInsets.only(
+          top: 60.0,
+          left: 20.0,
+          right: 20.0
+        ),
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Welcome\nto',
+                style: TextStyle(fontFamily: 'Manjari', fontSize: 50),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Casa',
+                style: TextStyle(fontFamily: 'Manjari', fontSize: 50, color: Theme.of(context).accentColor),
+              ),
+            ),
+            Material(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
@@ -74,10 +81,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
               shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Material(
+            Material(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
@@ -93,16 +97,30 @@ class _MyCustomFormState extends State<MyCustomForm> {
               shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
-          ),
-          FlatButton(
-            onPressed: () {
-              // Get call to API
-            },
-            child: Text(
-              "Sign In",
-            ),
-          )
-        ],
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                width: 60.0,
+                height: 60.0,
+                child: Material(
+                  child: FlatButton(
+                    onPressed: () {},
+                    child: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.white,
+                      size: 30.0,
+                    ),
+                    shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                  ),
+                  color: Theme.of(context).accentColor,
+                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                  elevation: 20.0,
+                  shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
