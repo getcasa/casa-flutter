@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'home.dart';
 
 // Define a custom Form widget.
@@ -95,7 +96,11 @@ class _SignInPageState extends State<SignInPage> {
                 height: 60.0,
                 child: Material(
                   child: FlatButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      var url = 'http://example.com/whatsit/create';
+                      var response = await http.post(url, body: {'name': 'doodle', 'color': 'blue'});
+                      print('Response status: ${response.statusCode}');
+                      print('Response body: ${response.body}');
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),
