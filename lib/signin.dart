@@ -30,7 +30,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   @override
-  initState() {
+  void initState() {
     super.initState();
     SharedPreferences.getInstance().then((_prefs) {
       prefs = _prefs;
