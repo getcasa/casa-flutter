@@ -1,6 +1,9 @@
+import 'package:casa/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,14 +12,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  SharedPreferences prefs;
+
   @override
   void initState() {
     super.initState();
 
-    var url = 'http://192.168.1.46:3000/v1/homes';
-    http.get(url).then((response) {
-      var parsedJson = json.decode(response.body);
-      
+    SharedPreferences.getInstance().then((_prefs) {
+      prefs = _prefs;
+
+      var token = prefs.getString('token');
+      if (token != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SignInPage()),
+        );
+        return;
+      }
+
+      var url = 'http://192.168.1.46:3000/v1/homes';
+      http.get(
+        url,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      ).then((response) {
+        var parsedJson = json.decode(response.body);
+        print(parsedJson);
+      });
     });
   }
 

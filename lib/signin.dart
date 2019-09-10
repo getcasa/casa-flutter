@@ -18,7 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   // of the TextField.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final _scaffoldKey = GlobalKey<ScaffoldState>(); 
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   SharedPreferences prefs;
 
   @override
