@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
       prefs = _prefs;
 
       var token = prefs.getString('token');
-      if (token != null) {
+      if (token == null) {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),
