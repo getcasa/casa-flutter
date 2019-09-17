@@ -35,7 +35,7 @@ class _SignInPageState extends State<SignInPage> {
     SharedPreferences.getInstance().then((_prefs) {
       prefs = _prefs;
       if (prefs.getString('token') != null) {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
         );
@@ -128,7 +128,7 @@ class _SignInPageState extends State<SignInPage> {
                       }
                       
                       await prefs.setString('token', parsedJson['message']);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),
                       );
