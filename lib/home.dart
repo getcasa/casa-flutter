@@ -1,3 +1,4 @@
+import 'package:casa/dialog.dart';
 import 'package:casa/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<_HomePageState> _refreshIndicatorKey = new GlobalKey<_HomePageState>();
   SharedPreferences prefs;
   String token;
+  Dialogs dialogs = new Dialogs();
 
   @override
   void initState() {
@@ -63,6 +65,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.add),
             tooltip: 'Add Home',
             onPressed: () {
+              dialogs.input(context, 'Create an home', 'Name');
             },
           ),
         ],
