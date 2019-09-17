@@ -12,7 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<_HomePageState> _refreshIndicatorKey = new GlobalKey<_HomePageState>();
   SharedPreferences prefs;
+  String token;
 
   @override
   void initState() {
@@ -21,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     SharedPreferences.getInstance().then((_prefs) {
       prefs = _prefs;
 
-      var token = prefs.getString('token');
+      token = prefs.getString('token');
       if (token == null) {
         Navigator.push(
           context,
@@ -30,36 +32,46 @@ class _HomePageState extends State<HomePage> {
         return;
       }
 
-      var url = 'http://192.168.1.46:3000/v1/homes';
-      http.get(
-        url,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      ).then((response) {
-        var parsedJson = json.decode(response.body);
-        print(parsedJson);
-      });
+      
+    });
+  }
+
+  Future<dynamic> getHomes() async {
+    var url = 'http://192.168.1.46:3000/v1/homes';
+    var response = await http.get(url,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+    );
+    var parsedJson = json.decode(response.body);
+    return parsedJson;
+  }
+
+  Future<Null> _refresh() {
+    return getHomes().then((homes) {
+      print(homes);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(
-          left: 10.0,
-          right: 10.0
-        ),
-        child: Column(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Hello',
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        title: const Text('Homes'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            tooltip: 'Add Home',
+            onPressed: () {
+            },
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: ListView(children: [
+        ])
       ),
     );
   }
