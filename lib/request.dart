@@ -22,6 +22,9 @@ class Request {
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
     );
     var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
     return parsedJson;
   }
 
@@ -32,6 +35,9 @@ class Request {
       body: body
     );
     var parsedJson = json.decode(response.body);
+    if (response.statusCode != 201) {
+      throw(parsedJson['message']);
+    }
     return parsedJson;
   }
 
