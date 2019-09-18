@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
 
 class Dialogs {
-  input(BuildContext context, String title, String description) {
+  final inputController = TextEditingController();
+
+  void dispose() {
+    inputController.dispose();
+  }
+
+  input(BuildContext context, String title, String placeholder, Function onSuccess) {
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -15,10 +21,11 @@ class Dialogs {
             title: Text(title, style: TextStyle(color: Colors.white),),
             content: SingleChildScrollView(
               child: TextField(
+                controller: inputController,
                 autofocus: true,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
-                  hintText: description,
+                  hintText: placeholder,
                   hintStyle: TextStyle(color: Colors.white),
                   border: InputBorder.none,
                   fillColor: Colors.white
@@ -35,7 +42,7 @@ class Dialogs {
               ),
               FlatButton(
                 onPressed: () => {
-                  Navigator.pop(context)
+                  onSuccess(inputController.text)
                 },
                 child: Text('Create'),
               )
