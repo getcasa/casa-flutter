@@ -1,10 +1,8 @@
 import 'package:casa/dialog.dart';
 import 'package:casa/signin.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:casa/request.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   SharedPreferences prefs;
   String token;
   Dialogs dialogs = new Dialogs();
+  Request request = new Request();
 
   @override
   void initState() {
@@ -33,23 +32,24 @@ class _HomePageState extends State<HomePage> {
         );
         return;
       }
-
-      
     });
   }
 
-  Future<dynamic> getHomes() async {
-    var url = 'http://192.168.1.46:3000/v1/homes';
-    var response = await http.get(url,
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-    );
-    var parsedJson = json.decode(response.body);
-    return parsedJson;
+  @override
+  void dispose() {
+    dialogs.dispose();
+    super.dispose();
   }
 
   Future<Null> _refresh() {
-    return getHomes().then((homes) {
+    return request.getHomes().then((homes) {
       print(homes);
+    });
+  }
+
+  Future<Null> addHome(String name) {
+    return request.addHome({ 'name': name }).then((home) {
+      print(home);
     });
   }
 
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.add),
             tooltip: 'Add Home',
             onPressed: () {
-              dialogs.input(context, 'Create an home', 'Name');
+              dialogs.input(context, 'Create an home', 'Name', addHome);
             },
           ),
         ],
