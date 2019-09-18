@@ -1,7 +1,6 @@
+import 'package:casa/request.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 import 'home.dart';
 
 // Define a custom Form widget.
@@ -20,6 +19,7 @@ class _SignInPageState extends State<SignInPage> {
   final passwordController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   SharedPreferences prefs;
+  Request request = new Request();
 
   @override
   void dispose() {
@@ -118,16 +118,16 @@ class _SignInPageState extends State<SignInPage> {
                 child: Material(
                   child: FlatButton(
                     onPressed: () async {
-                      var url = 'http://192.168.1.46:3000/v1/signin';
-                      var response = await http.post(url, body: {'email': emailController.text, 'password': passwordController.text});
-                      var parsedJson = json.decode(response.body);
-                      if (response.statusCode != 200) {
-                        final snackBar = SnackBar(content: Text(parsedJson['message']));
+                      var response;
+                      try {
+                        response = await request.signin(emailController.text, passwordController.text);
+                      } catch (e) {
+                        final snackBar = SnackBar(content: Text(e));
                         _scaffoldKey.currentState.showSnackBar(snackBar);
                         return;
                       }
-                      
-                      await prefs.setString('token', parsedJson['message']);
+
+                      await prefs.setString('token', response['message']);
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),

@@ -34,4 +34,16 @@ class Request {
     var parsedJson = json.decode(response.body);
     return parsedJson;
   }
+
+  Future<dynamic> signin(String email, String password) async {
+    var response = await http.post(
+      apiUrl + '/v1/signin',
+      body: {'email': email, 'password': password}
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
+    return parsedJson;
+  }
 }
