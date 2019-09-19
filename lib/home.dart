@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   String token;
   Dialogs dialogs = new Dialogs();
   Request request = new Request();
+  _HomePageState createState() => _HomePageState();
 
   @override
   void initState() {
