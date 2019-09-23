@@ -14,10 +14,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Request request = new Request();
+  Dialogs dialogs = new Dialogs();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<Null> addRoom(String name) {
+    return request.addRoom(widget.home['id'], { 'name': name }).then((room) {
+      print(room);
+    });
   }
 
   @override
@@ -28,10 +35,31 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         title: Text(widget.home['name']),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            tooltip: 'Settings',
-            onPressed: () {},
+          PopupMenuButton(
+            onSelected: (select) {
+              switch (select) {
+                case "add_room":
+                  dialogs.input(context, 'Create a room', 'Name', addRoom);
+                  break;
+                default:
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: "add_room",
+                  child: Text("Add room"),
+                ),
+                PopupMenuItem(
+                  value: "add_device",
+                  child: Text("Add device"),
+                ),
+                PopupMenuItem(
+                  value: "settings",
+                  child: Text("Settings"),
+                )
+              ];
+            },
           ),
         ],
       ),
