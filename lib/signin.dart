@@ -37,7 +37,7 @@ class _SignInPageState extends State<SignInPage> {
       if (prefs.getString('token') != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => HomesListPage()),
         );
         return;
       }
@@ -130,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                       await prefs.setString('token', response['message']);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(builder: (context) => HomesListPage()),
                       );
                     },
                     child: Icon(

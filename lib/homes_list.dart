@@ -1,17 +1,18 @@
 import 'package:casa/dialog.dart';
+import 'package:casa/home.dart';
 import 'package:casa/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:casa/request.dart';
 
-class HomePage extends StatefulWidget {
+class HomesListPage extends StatefulWidget {
   @override
 
-  _HomePageState createState() => _HomePageState();
+  _HomesListPageState createState() => _HomesListPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final GlobalKey<_HomePageState> _refreshIndicatorKey = new GlobalKey<_HomePageState>();
+class _HomesListPageState extends State<HomesListPage> {
+  final GlobalKey<_HomesListPageState> _refreshIndicatorKey = new GlobalKey<_HomesListPageState>();
   SharedPreferences prefs;
   String token;
   Dialogs dialogs = new Dialogs();
@@ -76,6 +77,9 @@ class _HomePageState extends State<HomePage> {
         child: FutureBuilder(
           future: _refresh(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data == null) {
+              return Text('Loading ...');
+            }
             return ListView.builder(
               itemCount: snapshot.data['data'].length,
               itemBuilder: (BuildContext context, int index) {
@@ -83,7 +87,10 @@ class _HomePageState extends State<HomePage> {
                   title: Text(snapshot.data['data'][index]['name']),
                   subtitle: Text(snapshot.data['data'][index]['address']),
                   onTap: () {
-                    print('Go to Home !');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage(homeId: snapshot.data['data'][index]['id'])),
+                    );
                   },
                 );
               },
