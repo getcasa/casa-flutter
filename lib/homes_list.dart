@@ -16,7 +16,6 @@ class _HomePageState extends State<HomePage> {
   String token;
   Dialogs dialogs = new Dialogs();
   Request request = new Request();
-  _HomePageState createState() => _HomePageState();
 
   @override
   void initState() {
@@ -42,10 +41,10 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  Future<Null> _refresh() {
-    return request.getHomes().then((homes) {
-      print(homes);
-    });
+  Future<dynamic> _refresh() async {
+    var homes = await request.getHomes();
+    // print(homes);
+    return homes;
   }
 
   Future<Null> addHome(String name) {
@@ -74,8 +73,23 @@ class _HomePageState extends State<HomePage> {
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
         onRefresh: _refresh,
-        child: ListView(children: [
-        ])
+        child: FutureBuilder(
+          future: _refresh(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return ListView.builder(
+              itemCount: snapshot.data['data'].length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(snapshot.data['data'][index]['name']),
+                  subtitle: Text(snapshot.data['data'][index]['address']),
+                  onTap: () {
+                    print('Go to Home !');
+                  },
+                );
+              },
+            );
+          },
+        )
       ),
     );
   }
