@@ -35,14 +35,15 @@ class Dialogs {
             ),
             actions: <Widget>[
               FlatButton(
-                onPressed: () => {
-                  Navigator.pop(context)
+                onPressed: () {
+                  Navigator.pop(context);
                 },
                 child: Text('Cancel'),
               ),
               FlatButton(
-                onPressed: () => {
-                  onSuccess(inputController.text)
+                onPressed: () {
+                  onSuccess(inputController.text);
+                  Navigator.pop(context);
                 },
                 child: Text('Create'),
               )
