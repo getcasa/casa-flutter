@@ -16,9 +16,22 @@ class Request {
     });
   }
 
-  Future<dynamic> getHome(String id) async {
+  Future<dynamic> addRoom(String homeId, body) async {
+    var response = await http.post(
+      apiUrl + '/v1/homes/' + homeId + '/rooms',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
+    return parsedJson;
+  }
+
+  Future<dynamic> getHome(String homeId) async {
     var response = await http.get(
-      apiUrl + '/v1/homes/' + id,
+      apiUrl + '/v1/homes/' + homeId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
     );
     var parsedJson = json.decode(response.body);
