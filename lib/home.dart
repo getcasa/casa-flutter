@@ -27,6 +27,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<dynamic> _getRooms() async {
+    var rooms = await request.getRooms(widget.home['id']);
+    return rooms;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +68,45 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Text('test')
+      body: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Rooms',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                decorationColor: Theme.of(context).accentColor
+              ),
+            ),
+          ),
+          FutureBuilder(
+            future: _getRooms(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              // print(snapshot);
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator()
+                );
+              }
+              if (snapshot.data == null) {
+                return Text('No rooms');
+              }
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data['data'].length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(snapshot.data['data'][index]['name']),
+                    onTap: () {
+                    },
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      )
     );
   }
 }
