@@ -89,7 +89,7 @@ class _HomesListPageState extends State<HomesListPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage(homeId: snapshot.data['data'][index]['id'])),
+                      MaterialPageRoute(builder: (context) => HomePage(home: snapshot.data['data'][index])),
                     );
                   },
                 );

@@ -16,6 +16,18 @@ class Request {
     });
   }
 
+  Future<dynamic> getHome(String id) async {
+    var response = await http.get(
+      apiUrl + '/v1/homes/' + id,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
+    return parsedJson;
+  }
+
   Future<dynamic> getHomes() async {
     var response = await http.get(
       apiUrl + '/v1/homes',

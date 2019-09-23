@@ -8,8 +8,8 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 
-  final String homeId;
-  const HomePage({Key key, this.homeId}): super(key: key);
+  final dynamic home;
+  const HomePage({Key key, this.home}): super(key: key);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -18,8 +18,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    print(widget.homeId);
   }
 
   @override
@@ -28,8 +26,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: const Text('Homes'),
-        actions: <Widget>[],
+        title: Text(widget.home['name']),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'Settings',
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Text('test')
     );
