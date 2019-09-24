@@ -72,12 +72,14 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           Container(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
             child: Text(
               'Rooms',
               style: TextStyle(
                 decoration: TextDecoration.underline,
-                decorationColor: Theme.of(context).accentColor
+                decorationColor: Theme.of(context).accentColor,
+                fontSize: 18
               ),
             ),
           ),
@@ -93,16 +95,39 @@ class _HomePageState extends State<HomePage> {
               if (snapshot.data == null) {
                 return Text('No rooms');
               }
-              return ListView.builder(
+              return GridView.builder(
                 shrinkWrap: true,
                 itemCount: snapshot.data['data'].length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2
+                ),
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(snapshot.data['data'][index]['name']),
-                    onTap: () {
-                    },
+                  return Container(
+                    padding: EdgeInsets.all(20.0),
+                    child: Material(
+                      child: FlatButton(
+                        onPressed: () {},
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.home,
+                              color: Colors.black,
+                              size: 50.0,
+                            ),
+                            Text(snapshot.data['data'][index]['name'])
+                          ]
+                        ),
+                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                      ),
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                      elevation: 20.0,
+                      shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+                    ),
                   );
-                },
+                }
               );
             },
           ),
