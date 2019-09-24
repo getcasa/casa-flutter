@@ -83,54 +83,61 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          FutureBuilder(
-            future: _getRooms(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              // print(snapshot);
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator()
-                );
-              }
-              if (snapshot.data == null) {
-                return Text('No rooms');
-              }
-              return GridView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data['data'].length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    padding: EdgeInsets.all(20.0),
-                    child: Material(
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.home,
-                              color: Colors.black,
-                              size: 50.0,
-                            ),
-                            Text(snapshot.data['data'][index]['name'])
-                          ]
-                        ),
-                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                      ),
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                      elevation: 20.0,
-                      shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-                    ),
+          Flexible(
+            flex: 1,
+            child: FutureBuilder(
+              future: _getRooms(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                // print(snapshot);
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator()
                   );
                 }
-              );
-            },
-          ),
+                if (snapshot.data == null) {
+                  return Text('No rooms');
+                }
+                return Container(
+                  height: double.infinity,
+                  padding: EdgeInsets.all(0.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data['data'].length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        padding: EdgeInsets.all(20.0),
+                        child: Material(
+                          child: FlatButton(
+                            onPressed: () {},
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.home,
+                                  color: Colors.black,
+                                  size: 50.0,
+                                ),
+                                Text(snapshot.data['data'][index]['name'])
+                              ]
+                            ),
+                            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                          ),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                          elevation: 20.0,
+                          shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+                        ),
+                      );
+                    }
+                  )
+                );
+              },
+            ),
+          )
         ],
       )
     );
