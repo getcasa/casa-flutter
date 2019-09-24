@@ -1,7 +1,5 @@
 import 'package:casa/dialog.dart';
-import 'package:casa/signin.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:casa/request.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,6 +17,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    request.init().then((_token) {
+      return;
+    });
   }
 
   Future<Null> addRoom(String name) {

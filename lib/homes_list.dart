@@ -13,7 +13,6 @@ class HomesListPage extends StatefulWidget {
 
 class _HomesListPageState extends State<HomesListPage> {
   final GlobalKey<_HomesListPageState> _refreshIndicatorKey = new GlobalKey<_HomesListPageState>();
-  SharedPreferences prefs;
   String token;
   Dialogs dialogs = new Dialogs();
   Request request = new Request();
@@ -22,10 +21,9 @@ class _HomesListPageState extends State<HomesListPage> {
   void initState() {
     super.initState();
 
-    SharedPreferences.getInstance().then((_prefs) {
-      prefs = _prefs;
+    request.init().then((_token) {
+      token = _token;
 
-      token = prefs.getString('token');
       if (token == null) {
         Navigator.push(
           context,

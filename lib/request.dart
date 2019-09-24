@@ -4,17 +4,22 @@ import 'dart:io';
 import 'dart:convert';
 
 class Request {
+  static final Request _singleton = new Request._internal();
   SharedPreferences prefs;
   String token;
   String apiUrl = 'http://192.168.1.46:3000';
 
-  Request() {
-    SharedPreferences.getInstance().then((_prefs) {
-      prefs = _prefs;
-
-      token = prefs.getString('token');
-    });
+  factory Request() {
+    return _singleton;
   }
+
+  Future<String> init() async {
+    prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('token');
+    return token;
+  }
+
+  Request._internal();
 
   Future<dynamic> getRooms(String homeId) async {
     var response = await http.get(
