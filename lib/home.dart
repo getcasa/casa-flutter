@@ -1,6 +1,7 @@
 import 'package:casa/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
+import 'package:casa/bottomNavigation.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -121,7 +122,10 @@ class _HomePageState extends State<HomePage> {
                                   color: Colors.black,
                                   size: 50.0,
                                 ),
-                                Text(snapshot.data['data'][index]['name'])
+                                Text(
+                                  snapshot.data['data'][index]['name'],
+                                  textAlign: TextAlign.center,
+                                )
                               ]
                             ),
                             shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
@@ -139,7 +143,8 @@ class _HomePageState extends State<HomePage> {
             ),
           )
         ],
-      )
+      ),
+      bottomNavigationBar: new BottomNavigation()
     );
   }
 }
