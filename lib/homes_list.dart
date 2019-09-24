@@ -2,7 +2,6 @@ import 'package:casa/dialog.dart';
 import 'package:casa/home.dart';
 import 'package:casa/signin.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:casa/request.dart';
 
 class HomesListPage extends StatefulWidget {
@@ -87,7 +86,7 @@ class _HomesListPageState extends State<HomesListPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage(home: snapshot.data['data'][index])),
+                      MaterialPageRoute(builder: (context) => HomePage(homeId: snapshot.data['data'][index]['id'])),
                     );
                   },
                 );

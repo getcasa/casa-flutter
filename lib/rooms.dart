@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/bottomNavigation.dart';
 
-class HomePage extends StatefulWidget {
+class RoomsPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _RoomsPageState createState() => _RoomsPageState();
 
   final dynamic homeId;
-  const HomePage({Key key, this.homeId}): super(key: key);
+  const RoomsPage({Key key, this.homeId}): super(key: key);
 }
 
-class _HomePageState extends State<HomePage> {
+class _RoomsPageState extends State<RoomsPage> {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
   dynamic home;
-  String homeName = '';
+  String homeName = 'test';
 
   @override
   void initState() {
@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      bottomNavigationBar: BottomNavigation(0, widget.homeId)
+      bottomNavigationBar: BottomNavigation(1, widget.homeId)
     );
   }
 }
