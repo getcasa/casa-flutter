@@ -1,7 +1,7 @@
 import 'package:casa/request.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'homes_list.dart';
+import 'home.dart';
 
 // Define a custom Form widget.
 class SignInPage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _SignInPageState extends State<SignInPage> {
       if (prefs.getString('token') != null) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomesListPage()),
+          MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
         );
         return;
       }
@@ -130,7 +130,7 @@ class _SignInPageState extends State<SignInPage> {
                       await prefs.setString('token', response['message']);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => HomesListPage()),
+                        MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
                       );
                     },
                     child: Icon(

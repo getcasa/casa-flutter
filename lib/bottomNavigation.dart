@@ -22,21 +22,39 @@ class BottomNavigation extends StatelessWidget {
             Icons.home,
             color: Color.fromARGB(255, 0, 0, 0)
           ),
-          title: new Text('Home')
+          title: Text(
+            'Home',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold
+            ),
+          )
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.apps,
             color: Color.fromARGB(255, 0, 0, 0)
           ),
-          title: new Text('Rooms')
+          title: Text(
+            'Rooms',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold
+            ),
+          )
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.schedule,
             color: Color.fromARGB(255, 0, 0, 0)
           ),
-          title: new Text('Automations')
+          title: Text(
+            'Automations',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold
+            ),
+          )
         )
       ],
       onTap: (index) {

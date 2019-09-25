@@ -14,17 +14,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
-  dynamic home;
+  List<dynamic> homes;
+  int homeIndex = 0;
   String homeName = '';
+  String userName = 'Jimi';
 
   @override
   void initState() {
     super.initState();
     request.init().then((_token) {
-      request.getHome(widget.homeId).then((_home) {
+      request.getHomes().then((_homes) {
         setState(() {
-          homeName = _home['data']['name'];
-          home = _home;
+          homes = _homes['data'];
+          if (widget.homeId != '') {
+            homeIndex = homes.indexWhere((_home) => _home['id'] == widget.homeId);
+          }
+          homeName = homes[homeIndex]['name'];
         });
       });
       return;
@@ -32,14 +37,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<Null> addRoom(String name) {
-    return request.addRoom(widget.homeId, { 'name': name }).then((room) {
+    return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((room) {
       print(room);
     });
-  }
-
-  Future<dynamic> _getRooms() async {
-    var rooms = await request.getRooms(widget.homeId);
-    return rooms;
   }
 
   @override
@@ -48,7 +48,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Text(homeName),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.home, color: Colors.black),
+          onPressed: () {
+            List<dynamic> names = homes.map((home) => home['name']).toList();
+            dialogs.select(context, 'My homes', names, homeIndex, (index) {
+              print(index);
+            });
+          },
+        ),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (select) {
@@ -81,78 +90,75 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           Container(
+            margin: EdgeInsets.only(top: 20.0),
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              'Rooms',
+              'Hello $userName,',
               style: TextStyle(
-                decoration: TextDecoration.underline,
-                decorationColor: Theme.of(context).accentColor,
-                fontSize: 18
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black54
               ),
-            ),
+            )
           ),
-          Flexible(
-            flex: 1,
-            child: FutureBuilder(
-              future: _getRooms(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                // print(snapshot);
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator()
-                  );
-                }
-                if (snapshot.data == null) {
-                  return Text('No rooms');
-                }
-                return Container(
-                  height: double.infinity,
-                  padding: EdgeInsets.all(0.0),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data['data'].length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        padding: EdgeInsets.all(20.0),
-                        child: Material(
-                          child: FlatButton(
-                            onPressed: () {},
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.home,
-                                  color: Colors.black,
-                                  size: 50.0,
-                                ),
-                                Text(
-                                  snapshot.data['data'][index]['name'],
-                                  textAlign: TextAlign.center,
-                                )
-                              ]
-                            ),
-                            shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                          ),
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                          elevation: 20.0,
-                          shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-                        ),
-                      );
-                    }
-                  )
-                );
-              },
-            ),
-          )
+          Container(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            alignment: Alignment.centerLeft,
+            child: Text.rich(
+              TextSpan(
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: '0',
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor
+                    )
+                  ),
+                  TextSpan(
+                    text: ' people in '
+                  ),
+                  TextSpan(
+                    text: homeName,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor
+                    )
+                  ),
+                ],
+              ),
+            )
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 40.0),
+            padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            alignment: Alignment.centerLeft,
+            child: Text.rich(
+              TextSpan(
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text: 'Fav',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      decorationColor: Theme.of(context).accentColor
+                    )
+                  ),
+                  TextSpan(
+                    text: 'orites'
+                  ),
+                ],
+              ),
+            )
+          ),
         ],
       ),
-      bottomNavigationBar: BottomNavigation(0, widget.homeId)
+      bottomNavigationBar: BottomNavigation(0, homes[homeIndex]['id'])
     );
   }
 }

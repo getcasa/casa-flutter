@@ -53,4 +53,31 @@ class Dialogs {
       }
     );
   }
+
+  select(BuildContext context, String title, List<dynamic> selections, int selected, Function onClick) {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return ListView.builder(
+          itemCount: selections.length,
+          itemBuilder: (BuildContext ctxt, int index) {
+            Widget leading = Padding(
+              padding: EdgeInsets.all(0)
+            );
+            if (selected == index) {
+              leading = Icon(Icons.check);
+            }
+            return ListTile(
+              leading: leading,
+              title: Text(selections[index]),
+              onTap: () {
+                onClick(index);
+                Navigator.pop(context);
+              },
+            );
+          }
+        );
+      }
+    );
+  }
 }

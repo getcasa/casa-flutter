@@ -14,17 +14,21 @@ class RoomsPage extends StatefulWidget {
 class _RoomsPageState extends State<RoomsPage> {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
-  dynamic home;
-  String homeName = 'test';
+  List<dynamic> homes;
+  int homeIndex = 0;
+  String homeName = '';
 
   @override
   void initState() {
     super.initState();
     request.init().then((_token) {
-      request.getHome(widget.homeId).then((_home) {
+      request.getHomes().then((_homes) {
         setState(() {
-          homeName = _home['data']['name'];
-          home = _home;
+          homes = _homes['data'];
+          if (widget.homeId != '') {
+            homeIndex = homes.indexWhere((_home) => _home['id'] == widget.homeId);
+          }
+          homeName = homes[homeIndex]['name'];
         });
       });
       return;
@@ -32,13 +36,13 @@ class _RoomsPageState extends State<RoomsPage> {
   }
 
   Future<Null> addRoom(String name) {
-    return request.addRoom(widget.homeId, { 'name': name }).then((room) {
+    return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((room) {
       print(room);
     });
   }
 
   Future<dynamic> _getRooms() async {
-    var rooms = await request.getRooms(widget.homeId);
+    var rooms = await request.getRooms(homes[homeIndex]['id']);
     return rooms;
   }
 
@@ -152,7 +156,7 @@ class _RoomsPageState extends State<RoomsPage> {
           )
         ],
       ),
-      bottomNavigationBar: BottomNavigation(1, widget.homeId)
+      bottomNavigationBar: BottomNavigation(1, homes[homeIndex]['id'])
     );
   }
 }
