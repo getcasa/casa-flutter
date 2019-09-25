@@ -43,8 +43,11 @@ flutter:
     - family: Manjari
       fonts:
         - asset: fonts/Manjari-Regular.ttf
+          weight: 400
         - asset: fonts/Manjari-Thin.ttf
           weight: 100
+        - asset: fonts/Manjari-Bold.ttf
+          weight: 700
 
   # To add assets to your application, add an assets section, like this:
   # assets:
