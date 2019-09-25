@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   List<dynamic> homes;
   int homeIndex = 0;
   String homeName = '';
+  String homeId = '';
   String userName = 'Jimi';
 
   @override
@@ -26,8 +27,10 @@ class _HomePageState extends State<HomePage> {
       request.getHomes().then((_homes) {
         setState(() {
           homes = _homes['data'];
+          homeId = homes[0]['id'];
           if (widget.homeId != '') {
             homeIndex = homes.indexWhere((_home) => _home['id'] == widget.homeId);
+            homeId = widget.homeId;
           }
           homeName = homes[homeIndex]['name'];
         });
@@ -161,7 +164,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigation(0, homes[homeIndex]['id'])
+      bottomNavigationBar: BottomNavigation(0, homeId)
     );
   }
 }
