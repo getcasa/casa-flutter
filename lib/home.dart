@@ -54,7 +54,10 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             List<dynamic> names = homes.map((home) => home['name']).toList();
             dialogs.select(context, 'My homes', names, homeIndex, (index) {
-              print(index);
+              setState(() {
+                homeIndex = index;
+                homeName = homes[homeIndex]['name'];
+              });
             });
           },
         ),
