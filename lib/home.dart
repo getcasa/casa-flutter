@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 homeIndex = index;
                 homeName = homes[homeIndex]['name'];
+                homeId = homes[homeIndex]['id'];
               });
             });
           },
