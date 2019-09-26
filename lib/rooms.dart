@@ -11,11 +11,12 @@ class RoomsPage extends StatefulWidget {
   const RoomsPage({Key key, this.homeId}): super(key: key);
 }
 
-class _RoomsPageState extends State<RoomsPage> {
+class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMixin {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
   List<dynamic> rooms;
   String roomName = '';
+  TabController _tabController;
 
   @override
   void initState() {
@@ -24,10 +25,17 @@ class _RoomsPageState extends State<RoomsPage> {
       _getRooms().then((_rooms) {
         setState(() {
           rooms = _rooms['data'];
+          _tabController = TabController(vsync: this, length: rooms.length);
         });
       });
       return;
     });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   Future<Null> addRoom(String name) {
@@ -50,7 +58,11 @@ class _RoomsPageState extends State<RoomsPage> {
         leading: IconButton(
           icon: Icon(Icons.list, color: Colors.black),
           onPressed: () {
-            print('Rooms list');
+            List<dynamic> names = rooms.map((home) => home['name']).toList();
+            int index = _tabController != null ? _tabController.index : 0;
+            dialogs.select(context, 'Rooms', names, index, (index) {
+              _tabController.animateTo(index);
+            });
           },
         ),
         actions: <Widget>[
@@ -89,6 +101,7 @@ class _RoomsPageState extends State<RoomsPage> {
         : DefaultTabController(
           length: rooms.length,
           child: TabBarView(
+            controller: _tabController,
             children: rooms.map((room) {
               return Container(
                 padding: EdgeInsets.only(left: 20.0, right: 20.0),
