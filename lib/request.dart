@@ -70,6 +70,19 @@ class Request {
     return parsedJson;
   }
 
+  Future<dynamic> editHome(String homeId, body) async {
+    var response = await http.put(
+      apiUrl + '/v1/homes/' + homeId,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
+    return parsedJson;
+  }
+
   Future<dynamic> addHome(body) async {
     var response = await http.post(
       apiUrl + '/v1/homes',
