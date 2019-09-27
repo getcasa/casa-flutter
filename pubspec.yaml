@@ -23,6 +23,7 @@ dependencies:
   shared_preferences: ^0.5.3+4
   cupertino_icons: ^0.1.2
   material_design_icons_flutter: ^3.2.4495
+  simple_gravatar: ^1.0.5
 
 dev_dependencies:
   flutter_test:

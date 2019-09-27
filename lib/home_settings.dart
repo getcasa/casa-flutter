@@ -2,6 +2,7 @@ import 'package:casa/dialog.dart';
 import 'package:casa/styled_components.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
+import 'package:simple_gravatar/simple_gravatar.dart';
 
 class HomeSettingsPage extends StatefulWidget {
   @override
@@ -27,6 +28,11 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
     request.init().then((_token) {
       return;
     });
+  }
+
+  Future<dynamic> _getHomeMembers() async {
+    var response = await request.getHomeMembers(widget.home['id']);
+    return response;
   }
 
   @override
@@ -118,6 +124,80 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                 shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(top: 20.0),
+              alignment: Alignment.centerLeft,
+              child: StyledTitle('Mem_bers')
+            ),
+            Flexible(
+              flex: 1,
+              child: Container(
+                margin: EdgeInsets.only(top: 20.0),
+                height: 500,
+                child: FutureBuilder(
+                  future: _getHomeMembers(),
+                  builder: (context, projectSnap) {
+                    if (projectSnap == null || projectSnap.data == null) {
+                      return CircularProgressIndicator();
+                    }
+                    return ListView.builder(
+                      itemCount: projectSnap.data['data'].length,
+                      itemBuilder: (context, index) {
+                        var user = projectSnap.data['data'][index];
+                        var gravatar = Gravatar(user['email']);
+                        var url = gravatar.imageUrl(
+                          size: 100,
+                          defaultImage: GravatarImage.retro,
+                          rating: GravatarRating.pg,
+                          fileExtension: true,
+                        );
+
+                        return ListTile(
+                          leading: CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(url),
+                          ),
+                          title: Text(
+                            user['firstname'] + ' ' + user['lastname'],
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          trailing: PopupMenuButton(
+                            onSelected: (select) {
+                              switch (select) {
+                                case "edit":
+                                  break;
+                                case "delete":
+                                  break;
+                                default:
+                              }
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return [
+                                PopupMenuItem(
+                                  value: "edit",
+                                  child: Text("Edit"),
+                                ),
+                                PopupMenuItem(
+                                  value: "remove",
+                                  child: Text(
+                                    "Remove",
+                                    style: TextStyle(
+                                      color: Colors.red
+                                    ),
+                                  ),
+                                )
+                              ];
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              )
+            )
           ],
         )
       )
