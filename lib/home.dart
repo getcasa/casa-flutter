@@ -1,7 +1,7 @@
 import 'package:casa/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
-import 'package:casa/bottomNavigation.dart';
+import 'package:casa/bottom_navigation.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends StatefulWidget {

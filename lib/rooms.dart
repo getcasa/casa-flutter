@@ -1,7 +1,7 @@
 import 'package:casa/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
-import 'package:casa/bottomNavigation.dart';
+import 'package:casa/bottom_navigation.dart';
 
 class RoomsPage extends StatefulWidget {
   @override
