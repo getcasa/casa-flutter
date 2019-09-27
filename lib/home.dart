@@ -67,9 +67,10 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: <Widget>[
           PopupMenuButton(
+            icon: Icon(Icons.add),
             onSelected: (select) {
               switch (select) {
-                case "add_room":
+                case "create_room":
                   dialogs.input(context, 'Create a room', 'Name', addRoom);
                   break;
                 default:
@@ -78,16 +79,35 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem(
-                  value: "add_room",
-                  child: Text("Add room"),
-                ),
-                PopupMenuItem(
                   value: "add_device",
                   child: Text("Add device"),
                 ),
                 PopupMenuItem(
-                  value: "settings",
-                  child: Text("Settings"),
+                  value: "create_room",
+                  child: Text("Create room"),
+                ),
+                PopupMenuItem(
+                  value: "create_home",
+                  child: Text("Create home"),
+                )
+              ];
+            },
+          ),
+          PopupMenuButton(
+            onSelected: (select) {
+              switch (select) {
+                default:
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: "home_settings",
+                  child: Text("Home settings"),
+                ),
+                PopupMenuItem(
+                  value: "app_settings",
+                  child: Text("App settings"),
                 )
               ];
             },
