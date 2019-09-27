@@ -132,7 +132,8 @@ class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMix
                               text: 'Dev',
                               style: TextStyle(
                                 decoration: TextDecoration.underline,
-                                decorationColor: Theme.of(context).accentColor
+                                decorationColor: Theme.of(context).accentColor,
+                                decorationThickness: 2.0
                               )
                             ),
                             TextSpan(

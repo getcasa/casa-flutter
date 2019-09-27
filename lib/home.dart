@@ -1,4 +1,5 @@
 import 'package:casa/dialog.dart';
+import 'package:casa/home_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/bottom_navigation.dart';
@@ -108,6 +109,12 @@ class _HomePageState extends State<HomePage> {
           PopupMenuButton(
             onSelected: (select) {
               switch (select) {
+                case "home_settings":
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeSettingsPage(home: homes[homeIndex])),
+                  );
+                  break;
                 default:
               }
             },
@@ -185,7 +192,8 @@ class _HomePageState extends State<HomePage> {
                     text: 'Fav',
                     style: TextStyle(
                       decoration: TextDecoration.underline,
-                      decorationColor: Theme.of(context).accentColor
+                      decorationColor: Theme.of(context).accentColor,
+                      decorationThickness: 2.0
                     )
                   ),
                   TextSpan(
