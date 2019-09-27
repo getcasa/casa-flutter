@@ -2,6 +2,7 @@ import 'package:casa/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/bottomNavigation.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0.0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.home, color: Colors.black),
+          icon: Icon(MdiIcons.homeOutline),
           onPressed: () {
             List<dynamic> names = homes.map((home) => home['name']).toList();
             dialogs.select(context, 'My homes', names, homeIndex, (index) {

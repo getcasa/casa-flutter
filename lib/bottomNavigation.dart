@@ -1,6 +1,7 @@
 import 'package:casa/home.dart';
 import 'package:casa/rooms.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class BottomNavigation extends StatelessWidget {
   int navigationIndex;
@@ -19,7 +20,7 @@ class BottomNavigation extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.home,
+            MdiIcons.homeOutline,
             color: Color.fromARGB(255, 0, 0, 0)
           ),
           title: Text(
