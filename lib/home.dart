@@ -1,5 +1,6 @@
 import 'package:casa/dialog.dart';
 import 'package:casa/home_settings.dart';
+import 'package:casa/styled_components.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/bottom_navigation.dart';
@@ -181,27 +182,7 @@ class _HomePageState extends State<HomePage> {
             margin: EdgeInsets.only(top: 40.0),
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
-            child: Text.rich(
-              TextSpan(
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                    text: 'Fav',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      decorationColor: Theme.of(context).accentColor,
-                      decorationThickness: 2.0
-                    )
-                  ),
-                  TextSpan(
-                    text: 'orites'
-                  ),
-                ],
-              ),
-            )
+            child: StyledTitle('Fav_orites')
           ),
         ],
       ),
