@@ -25,24 +25,32 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     request.init().then((_token) {
-      request.getHomes().then((_homes) {
-        setState(() {
-          homes = _homes['data'];
-          homeId = homes[0]['id'];
-          if (widget.homeId != '') {
-            homeIndex = homes.indexWhere((_home) => _home['id'] == widget.homeId);
-            homeId = widget.homeId;
-          }
-          homeName = homes[homeIndex]['name'];
-        });
-      });
+      getHomes(widget.homeId);
       return;
     });
   }
 
+  getHomes(_homeId) {
+    request.getHomes().then((_homes) {
+      setState(() {
+        homes = _homes['data'];
+        homeId = homes[0]['id'];
+        if (_homeId != '') {
+          homeIndex = homes.indexWhere((_home) => _home['id'] == _homeId);
+          homeId = _homeId;
+        }
+        homeName = homes[homeIndex]['name'];
+      });
+    });
+  }
+
   Future<Null> addRoom(String name) {
-    return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((room) {
-      print(room);
+    return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((room) {});
+  }
+
+  Future<Null> addHome(String name) {
+    return request.addHome({ 'name': name }).then((home) {
+      getHomes(home['message']);
     });
   }
 
@@ -73,6 +81,9 @@ class _HomePageState extends State<HomePage> {
               switch (select) {
                 case "create_room":
                   dialogs.input(context, 'Create a room', 'Name', addRoom);
+                  break;
+                case "create_home":
+                  dialogs.input(context, 'Create an home', 'Name', addHome);
                   break;
                 default:
               }
