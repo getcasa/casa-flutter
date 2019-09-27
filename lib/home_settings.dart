@@ -93,36 +93,41 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
             Container(
               margin: EdgeInsets.only(top: 10.0),
               alignment: Alignment.centerRight,
-              child: Material(
-                child: FlatButton(
-                  onPressed: () async {
-                    var response;
-                      try {
-                        response = await request.editHome(widget.home['id'], {
-                          'name': homeNameController.text,
-                          'address': homeAddressController.text
-                        });
-                      } catch (e) {
-                        final snackBar = SnackBar(content: Text(e));
+              child: Container(
+                height: 45,
+                child: Material(
+                  child: FlatButton(
+                    padding: EdgeInsets.only(top: 4.0),
+                    onPressed: () async {
+                      var response;
+                        try {
+                          response = await request.editHome(widget.home['id'], {
+                            'name': homeNameController.text,
+                            'address': homeAddressController.text
+                          });
+                        } catch (e) {
+                          final snackBar = SnackBar(content: Text(e));
+                          _scaffoldKey.currentState.showSnackBar(snackBar);
+                          return;
+                        }
+                        final snackBar = SnackBar(content: Text(response['message']));
                         _scaffoldKey.currentState.showSnackBar(snackBar);
-                        return;
-                      }
-                      final snackBar = SnackBar(content: Text(response['message']));
-                      _scaffoldKey.currentState.showSnackBar(snackBar);
-                  },
-                  child: Text(
-                    'Save',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
+                    },
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white
+                      )
                     ),
+                    shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
                   ),
+                  color: Theme.of(context).accentColor,
                   shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                  elevation: 20.0,
+                  shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
                 ),
-                color: Theme.of(context).accentColor,
-                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                elevation: 20.0,
-                shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-              ),
+              )
             ),
             Container(
               margin: EdgeInsets.only(top: 20.0),
@@ -133,7 +138,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
               flex: 1,
               child: Container(
                 margin: EdgeInsets.only(top: 20.0),
-                height: 500,
+                height: double.infinity,
                 child: FutureBuilder(
                   future: _getHomeMembers(),
                   builder: (context, projectSnap) {
@@ -166,9 +171,9 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                           trailing: PopupMenuButton(
                             onSelected: (select) {
                               switch (select) {
-                                case "edit":
+                                case 'edit':
                                   break;
-                                case "delete":
+                                case 'delete':
                                   break;
                                 default:
                               }
@@ -176,13 +181,13 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                             itemBuilder: (BuildContext context) {
                               return [
                                 PopupMenuItem(
-                                  value: "edit",
-                                  child: Text("Edit"),
+                                  value: 'edit',
+                                  child: Text('Edit'),
                                 ),
                                 PopupMenuItem(
-                                  value: "remove",
+                                  value: 'remove',
                                   child: Text(
-                                    "Remove",
+                                    'Remove',
                                     style: TextStyle(
                                       color: Colors.red
                                     ),
