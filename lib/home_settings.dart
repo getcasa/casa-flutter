@@ -35,6 +35,16 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
     return response;
   }
 
+  Future<dynamic> _addMember(String email) {
+    return request.addHomeMember(widget.home['id'], { 'email': email }).then((data) {
+      final snackBar = SnackBar(content: Text(data['message']));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }).catchError((err) {
+      final snackBar = SnackBar(content: Text(err));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +142,24 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
             Container(
               margin: EdgeInsets.only(top: 20.0),
               alignment: Alignment.centerLeft,
-              child: StyledTitle('Mem_bers')
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  StyledTitle('Mem_bers'),
+                  Container(
+                    width: 30,
+                    height: 30,
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
+                      padding: EdgeInsets.all(0),
+                      child: Icon(Icons.add),
+                      onPressed: () {
+                        dialogs.input(context, 'Add a member', 'Email', _addMember);
+                      },
+                    )
+                  )
+                ],
+              )
             ),
             Flexible(
               flex: 1,
