@@ -197,48 +197,57 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                           fileExtension: true,
                         );
 
-                        return ListTile(
-                          leading: CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(url),
-                          ),
-                          title: Text(
-                            user['firstname'] + ' ' + user['lastname'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                        var borderColor = (user['admin'] == 1) ? Theme.of(context).accentColor : Colors.transparent;
+
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 27,
+                              backgroundColor: borderColor,
+                              child: CircleAvatar(
+                                radius: 25,
+                                backgroundImage: NetworkImage(url),
+                              ),
                             ),
-                          ),
-                          trailing: PopupMenuButton(
-                            onSelected: (select) {
-                              switch (select) {
-                                case 'edit':
-                                  break;
-                                case 'remove':
-                                  dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {
-                                    await _removeHomeMember(user['id']);
-                                  });
-                                  break;
-                                default:
-                              }
-                            },
-                            itemBuilder: (BuildContext context) {
-                              return [
-                                PopupMenuItem(
-                                  value: 'edit',
-                                  child: Text('Edit'),
-                                ),
-                                PopupMenuItem(
-                                  value: 'remove',
-                                  child: Text(
-                                    'Remove',
-                                    style: TextStyle(
-                                      color: Colors.red
-                                    ),
+                            title: Text(
+                              user['firstname'] + ' ' + user['lastname'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: PopupMenuButton(
+                              onSelected: (select) {
+                                switch (select) {
+                                  case 'edit':
+                                    break;
+                                  case 'remove':
+                                    dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {
+                                      await _removeHomeMember(user['id']);
+                                    });
+                                    break;
+                                  default:
+                                }
+                              },
+                              itemBuilder: (BuildContext context) {
+                                return [
+                                  PopupMenuItem(
+                                    value: 'edit',
+                                    child: Text('Edit'),
                                   ),
-                                )
-                              ];
-                            },
-                          ),
+                                  PopupMenuItem(
+                                    value: 'remove',
+                                    child: Text(
+                                      'Remove',
+                                      style: TextStyle(
+                                        color: Colors.red
+                                      ),
+                                    ),
+                                  )
+                                ];
+                              },
+                            ),
+                          )
                         );
                       },
                     );
