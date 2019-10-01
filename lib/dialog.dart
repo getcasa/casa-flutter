@@ -80,4 +80,46 @@ class Dialogs {
       }
     );
   }
+
+  confirm(BuildContext context, String title, Function onSuccess) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: AlertDialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            title: Text(title, style: TextStyle(color: Colors.white),),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  )
+                ),
+              ),
+              FlatButton(
+                onPressed: () {
+                  onSuccess();
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Confirm',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  )
+                ),
+              )
+            ],
+          )
+        );
+      }
+    );
+  }
 }
