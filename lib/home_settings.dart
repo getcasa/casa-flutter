@@ -15,7 +15,6 @@ class HomeSettingsPage extends StatefulWidget {
 class _HomeSettingsPageState extends State<HomeSettingsPage> {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
-  List<dynamic> home;
   final homeNameController = TextEditingController();
   final homeAddressController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -35,7 +34,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
     return response;
   }
 
-  Future<dynamic> _addMember(String email) {
+  Future<dynamic> _addHomeMember(String email) {
     return request.addHomeMember(widget.home['id'], { 'email': email }).then((data) {
       final snackBar = SnackBar(content: Text(data['message']));
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -43,6 +42,20 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
       final snackBar = SnackBar(content: Text(err));
       _scaffoldKey.currentState.showSnackBar(snackBar);
     });
+  }
+
+  Future<Null> _removeHomeMember(String userId) async {
+    var response;
+    try {
+      response = await request.removeHomeMember(widget.home['id'], userId);
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+      return;
+    }
+    setState(() {});
+    final snackBar = SnackBar(content: Text(response['message']));
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   @override
@@ -154,7 +167,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                       padding: EdgeInsets.all(0),
                       child: Icon(Icons.add),
                       onPressed: () {
-                        dialogs.input(context, 'Add a member', 'Email', _addMember);
+                        dialogs.input(context, 'Add a member', 'Email', _addHomeMember);
                       },
                     )
                   )
@@ -200,7 +213,10 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                               switch (select) {
                                 case 'edit':
                                   break;
-                                case 'delete':
+                                case 'remove':
+                                  dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {
+                                    await _removeHomeMember(user['id']);
+                                  });
                                   break;
                                 default:
                               }

@@ -21,6 +21,18 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> removeHomeMember(String homeId, String userId) async {
+    var response = await http.delete(
+      apiUrl + '/v1/homes/' + homeId + '/members/' + userId,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
+    return parsedJson;
+  }
+
   Future<dynamic> addHomeMember(String homeId, body) async {
     var response = await http.post(
       apiUrl + '/v1/homes/' + homeId + '/members',
