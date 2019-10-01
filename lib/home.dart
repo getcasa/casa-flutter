@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
             margin: EdgeInsets.only(top: 40.0),
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
-            child: StyledTitle('Fav_orites')
+            child: StyledTitle('Sho_rtcuts')
           ),
         ],
       ),
