@@ -197,7 +197,8 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                           fileExtension: true,
                         );
 
-                        var borderColor = (user['admin'] == 1) ? Theme.of(context).accentColor : Colors.transparent;
+                        var isOwner = user['id'] == widget.home['creator']['id'];
+                        var borderColor = isOwner ? Theme.of(context).accentColor : Colors.transparent;
 
                         return Container(
                           margin: EdgeInsets.only(bottom: 5),
@@ -216,7 +217,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            trailing: PopupMenuButton(
+                            trailing: !isOwner ? PopupMenuButton(
                               onSelected: (select) {
                                 switch (select) {
                                   case 'edit':
@@ -246,7 +247,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                                   )
                                 ];
                               },
-                            ),
+                            ) : null
                           )
                         );
                       },
