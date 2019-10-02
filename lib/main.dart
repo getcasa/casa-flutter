@@ -1,5 +1,5 @@
+import 'package:casa/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'signin.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(255, 177, 66, 1),
         accentColor: Color.fromRGBO(255, 177, 66, 1),
       ),
-      home: SignInPage(),
+      home: SplashScreen(),
     );
   }
 }

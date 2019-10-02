@@ -22,26 +22,20 @@ class _SignInPageState extends State<SignInPage> {
   Request request = new Request();
 
   @override
+  void initState() {
+    super.initState();
+
+    SharedPreferences.getInstance().then((_prefs) {
+      prefs = _prefs;
+    });
+  }
+
+  @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    SharedPreferences.getInstance().then((_prefs) {
-      prefs = _prefs;
-      if (prefs.getString('token') != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
-        );
-        return;
-      }
-    });
   }
 
   @override

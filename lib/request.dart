@@ -21,6 +21,21 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> getUser(String userId) async {
+    if (userId == '') {
+      userId = 'me';
+    }
+    var response = await http.get(
+      apiUrl + '/v1/users/' + userId,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
+    return parsedJson;
+  }
+
   Future<dynamic> editHomeMember(String homeId, String userId, body) async {
     var response = await http.put(
       apiUrl + '/v1/homes/' + homeId + '/members/' + userId,
