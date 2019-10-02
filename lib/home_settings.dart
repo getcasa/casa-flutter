@@ -1,7 +1,9 @@
 import 'package:casa/dialog.dart';
+import 'package:casa/home.dart';
 import 'package:casa/styled_components.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:simple_gravatar/simple_gravatar.dart';
 
 class HomeSettingsPage extends StatefulWidget {
@@ -58,6 +60,20 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
+  Future<Null> _deleteHome() async {
+    try {
+      await request.deleteHome(widget.home['id']);
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+      return;
+    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage(homeId: '',)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +82,19 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         centerTitle: true,
-        actions: <Widget>[],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              MdiIcons.trashCanOutline,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              dialogs.confirm(context, "You really want to delete " + widget.home['name'] + " and all datas?", () async {
+                await _deleteHome();
+              });
+            },
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.only(left: 20.0, right: 20.0),

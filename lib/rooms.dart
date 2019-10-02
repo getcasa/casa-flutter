@@ -35,7 +35,9 @@ class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMix
 
   @override
   void dispose() {
-    _tabController.dispose();
+    if (_tabController != null) {
+      _tabController.dispose();
+    }
     super.dispose();
   }
 
