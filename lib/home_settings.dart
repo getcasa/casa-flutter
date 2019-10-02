@@ -249,6 +249,28 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                               onSelected: (select) {
                                 switch (select) {
                                   case 'edit':
+                                    var options = [
+                                      {
+                                        'name': 'read',
+                                        'value': user['read'] == 1 ? true : false
+                                      },
+                                      {
+                                        'name': 'write',
+                                        'value': user['write'] == 1 ? true : false
+                                      },
+                                      {
+                                        'name': 'manage',
+                                        'value': user['manage'] == 1 ? true : false
+                                      },
+                                      {
+                                        'name': 'admin',
+                                        'value': user['admin'] == 1 ? true : false
+                                      }
+                                    ];
+                                    dialogs.options(context, "test", options, (values) {
+                                      print(values);
+                                      // await _removeHomeMember(user['id']);
+                                    });
                                     break;
                                   case 'remove':
                                     dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {

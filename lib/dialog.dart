@@ -122,4 +122,59 @@ class Dialogs {
       }
     );
   }
+
+  options(BuildContext context, String title, List<dynamic> options, Function onSuccess) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: AlertDialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0.0,
+            title: Text(title, style: TextStyle(color: Colors.white),),
+            content: Column(
+              children: options.map((option) {
+                var checkbox = CheckboxListTile(
+                  title: Text(option['name']),
+                  value: option['value'],
+                  onChanged: (bool value) {
+                    var i = options.indexWhere((_option) => _option['name'] == option['name']);
+                    options[i]['value'] = value;
+                  },
+                );
+                return checkbox;
+              }).toList()
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  )
+                ),
+              ),
+              FlatButton(
+                onPressed: () {
+                  onSuccess(options);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold
+                  )
+                ),
+              )
+            ],
+          )
+        );
+      }
+    );
+  }
 }
