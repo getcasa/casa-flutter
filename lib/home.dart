@@ -28,12 +28,13 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     request.init().then((_token) {
-      getHomes(widget.homeId);
+      _getHomes(widget.homeId);
       return;
     });
   }
 
-  getHomes(_homeId) {
+
+  _getHomes(_homeId) {
     request.getHomes().then((_homes) {
       setState(() {
         homes = _homes['data'];
@@ -47,7 +48,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<dynamic> addRoom(String name) {
+  Future<dynamic> _addRoom(String name) {
     return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((data) {
       final snackBar = SnackBar(content: Text(name + ' has been created'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -57,11 +58,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<dynamic> addHome(String name) {
+  Future<dynamic> _addHome(String name) {
     return request.addHome({ 'name': name }).then((data) {
       final snackBar = SnackBar(content: Text(name + ' has been created'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
-      getHomes(data['message']);
+      _getHomes(data['message']);
     }).catchError((err) {
       final snackBar = SnackBar(content: Text(err));
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -95,10 +96,10 @@ class _HomePageState extends State<HomePage> {
             onSelected: (select) {
               switch (select) {
                 case "create_room":
-                  dialogs.input(context, 'Create a room', 'Name', addRoom);
+                  dialogs.input(context, 'Create a room', 'Name', _addRoom);
                   break;
                 case "create_home":
-                  dialogs.input(context, 'Create an home', 'Name', addHome);
+                  dialogs.input(context, 'Create an home', 'Name', _addHome);
                   break;
                 default:
               }
