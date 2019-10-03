@@ -15,7 +15,7 @@ class RoomsPage extends StatefulWidget {
 class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMixin {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
-  List<dynamic> rooms;
+  List<dynamic> rooms = [];
   String roomName = '';
   TabController _tabController;
 
@@ -25,7 +25,7 @@ class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMix
     request.init().then((_token) {
       _getRooms().then((_rooms) {
         setState(() {
-          rooms = _rooms['data'];
+          rooms = _rooms['data'] == null ? [] : _rooms['data'];
           _tabController = TabController(vsync: this, length: rooms.length);
         });
       });
@@ -99,8 +99,10 @@ class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMix
       ),
       body: rooms == null || rooms.length == 0
         ? Center(
-          child: CircularProgressIndicator(),
-        )
+            child: rooms.length == 0
+              ? Text('No rooms')
+              : CircularProgressIndicator()
+          )
         : DefaultTabController(
           length: rooms.length,
           child: TabBarView(
