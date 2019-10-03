@@ -22,17 +22,18 @@ class _HomePageState extends State<HomePage> {
   int homeIndex = 0;
   String homeName = '';
   String homeId = '';
-  String userName = 'Jimi';
+  String userFirstname = '';
+  dynamic user;
 
   @override
   void initState() {
     super.initState();
     request.init().then((_token) {
       _getHomes(widget.homeId);
+      _getUser();
       return;
     });
   }
-
 
   _getHomes(_homeId) {
     request.getHomes().then((_homes) {
@@ -63,6 +64,18 @@ class _HomePageState extends State<HomePage> {
       final snackBar = SnackBar(content: Text(name + ' has been created'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
       _getHomes(data['message']);
+    }).catchError((err) {
+      final snackBar = SnackBar(content: Text(err));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    });
+  }
+
+  _getUser() {
+    return request.getUser('').then((data) {
+      setState(() {
+        user = data['data'];
+        userFirstname = user['firstname'];
+      });
     }).catchError((err) {
       final snackBar = SnackBar(content: Text(err));
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -159,7 +172,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
             child: Text(
-              'Hello $userName,',
+              'Hello $userFirstname,',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
