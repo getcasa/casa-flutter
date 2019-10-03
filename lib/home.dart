@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
   List<dynamic> homes;
@@ -46,19 +47,31 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<Null> addRoom(String name) {
-    return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((room) {});
+  Future<dynamic> addRoom(String name) {
+    return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((data) {
+      final snackBar = SnackBar(content: Text(name + ' has been created'));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    }).catchError((err) {
+      final snackBar = SnackBar(content: Text(err));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+    });
   }
 
-  Future<Null> addHome(String name) {
-    return request.addHome({ 'name': name }).then((home) {
-      getHomes(home['message']);
+  Future<dynamic> addHome(String name) {
+    return request.addHome({ 'name': name }).then((data) {
+      final snackBar = SnackBar(content: Text(name + ' has been created'));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+      getHomes(data['message']);
+    }).catchError((err) {
+      final snackBar = SnackBar(content: Text(err));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
