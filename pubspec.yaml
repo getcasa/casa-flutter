@@ -24,6 +24,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   material_design_icons_flutter: ^3.2.4495
   simple_gravatar: ^1.0.5
+  mobx: ^0.3.8+1
 
 dev_dependencies:
   flutter_test:
