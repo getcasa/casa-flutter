@@ -1,4 +1,4 @@
-import 'package:casa/home.dart';
+import 'package:casa/pages/home.dart';
 import 'package:casa/request.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

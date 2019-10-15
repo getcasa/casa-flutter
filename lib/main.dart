@@ -1,4 +1,4 @@
-import 'package:casa/splash_screen.dart';
+import 'package:casa/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());

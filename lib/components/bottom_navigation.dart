@@ -1,5 +1,5 @@
-import 'package:casa/home.dart';
-import 'package:casa/rooms.dart';
+import 'package:casa/pages/home.dart';
+import 'package:casa/pages/rooms.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
