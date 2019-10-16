@@ -1,3 +1,4 @@
+import 'package:casa/structs.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
@@ -21,7 +22,7 @@ class Request {
 
   Request._internal();
 
-  Future<dynamic> getUser(String userId) async {
+  Future<User> getUser(String userId) async {
     if (userId == '') {
       userId = 'me';
     }
@@ -33,7 +34,8 @@ class Request {
     if (response.statusCode != 200) {
       throw(parsedJson['message']);
     }
-    return parsedJson;
+    var _user = User(parsedJson['data']);
+    return _user;
   }
 
   Future<dynamic> editHomeMember(String homeId, String userId, body) async {

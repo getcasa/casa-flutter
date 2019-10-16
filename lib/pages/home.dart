@@ -1,10 +1,12 @@
 import 'package:casa/components/dialog.dart';
 import 'package:casa/pages/home_settings.dart';
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/components/bottom_navigation.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,19 +20,18 @@ class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
+  CasaStore store = CasaStore();
+
   List<dynamic> homes;
   int homeIndex = 0;
   String homeName = '';
   String homeId = '';
-  String userFirstname = '';
-  dynamic user;
 
   @override
   void initState() {
     super.initState();
     request.init().then((_token) {
       _getHomes(widget.homeId);
-      _getUser();
       return;
     });
   }
@@ -64,18 +65,6 @@ class _HomePageState extends State<HomePage> {
       final snackBar = SnackBar(content: Text(name + ' has been created'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
       _getHomes(data['message']);
-    }).catchError((err) {
-      final snackBar = SnackBar(content: Text(err));
-      _scaffoldKey.currentState.showSnackBar(snackBar);
-    });
-  }
-
-  _getUser() {
-    return request.getUser('').then((data) {
-      setState(() {
-        user = data['data'];
-        userFirstname = user['firstname'];
-      });
     }).catchError((err) {
       final snackBar = SnackBar(content: Text(err));
       _scaffoldKey.currentState.showSnackBar(snackBar);
@@ -171,13 +160,15 @@ class _HomePageState extends State<HomePage> {
             margin: EdgeInsets.only(top: 20.0),
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
-            child: Text(
-              'Hello $userFirstname,',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black54
-              ),
+            child: Observer(
+              builder: (_) => Text(
+                'Hello ${store.user.firstname},',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54
+                ),
+              )
             )
           ),
           Container(

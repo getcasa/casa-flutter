@@ -1,5 +1,6 @@
 import 'package:casa/pages/home.dart';
 import 'package:casa/request.dart';
+import 'package:casa/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'signin.dart';
@@ -11,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Request request = new Request();
+  CasaStore store = CasaStore();
 
   @override
   void initState() {
@@ -24,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       request.getUser('').then((_user) {
-        print(_user);
+        store.setUser(_user);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage(homeId: '')),

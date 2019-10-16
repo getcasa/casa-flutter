@@ -4,9 +4,19 @@ class User {
   String firstname;
   String lastname;
   String email;
-  String password;
   String birthdate;
   String createdAt;
+  String updatedAt;
+
+  User(Map<String, dynamic> data) {
+    id = data['id'];
+    firstname = data['firstname'];
+    lastname = data['lastname'];
+    email = data['email'];
+    birthdate = data['birthdate'];
+    createdAt = data['createAt'];
+    updatedAt = data['updatedAt'];
+  }
 }
 
 // Token structure
