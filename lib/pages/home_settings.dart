@@ -1,6 +1,7 @@
 import 'package:casa/components/dialog.dart';
 import 'package:casa/pages/home.dart';
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -17,6 +18,7 @@ class HomeSettingsPage extends StatefulWidget {
 class _HomeSettingsPageState extends State<HomeSettingsPage> {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
+  CasaStore store = CasaStore();
   final homeNameController = TextEditingController();
   final homeAddressController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -226,6 +228,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                         );
 
                         var isOwner = user['id'] == widget.home['creator']['id'];
+                        var isMe = user['id'] == store.user.id;
                         var borderColor = isOwner ? Theme.of(context).accentColor : Colors.transparent;
 
                         return Container(
@@ -245,7 +248,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            trailing: !isOwner ? PopupMenuButton(
+                            trailing: !isOwner && !isMe ? PopupMenuButton(
                               onSelected: (select) {
                                 switch (select) {
                                   case 'edit':
