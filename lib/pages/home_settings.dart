@@ -216,9 +216,9 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                       return CircularProgressIndicator();
                     }
                     return ListView.builder(
-                      itemCount: projectSnap.data['data'].length,
+                      itemCount: projectSnap.data.length,
                       itemBuilder: (context, index) {
-                        var user = projectSnap.data['data'][index];
+                        var user = projectSnap.data[index];
                         var gravatar = Gravatar(user['email']);
                         var url = gravatar.imageUrl(
                           size: 100,
