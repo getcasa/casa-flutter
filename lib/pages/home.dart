@@ -161,8 +161,9 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
             child: Observer(
+              name: 'username',
               builder: (_) => Text(
-                'Hello ${store.user.firstname},',
+                'Hello ${store.getUsername},',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

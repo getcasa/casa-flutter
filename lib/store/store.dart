@@ -14,7 +14,7 @@ class CasaStore with Store {
   User user;
 
   @computed
-  String get getUser => user.firstname;
+  String get getUsername => (user != null) ? user.firstname : '';
 
   @action
   void setUser(User _user) {
