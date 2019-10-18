@@ -34,7 +34,7 @@ class Request {
     if (response.statusCode != 200) {
       throw(parsedJson['message']);
     }
-    var _user = User(parsedJson['data']);
+    var _user = User(parsedJson);
     return _user;
   }
 
