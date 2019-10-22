@@ -255,22 +255,22 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                                     var options = [
                                       {
                                         'name': 'read',
-                                        'value': user['read'] == 1 ? true : false
+                                        'value': user['read']
                                       },
                                       {
                                         'name': 'write',
-                                        'value': user['write'] == 1 ? true : false
+                                        'value': user['write']
                                       },
                                       {
                                         'name': 'manage',
-                                        'value': user['manage'] == 1 ? true : false
+                                        'value': user['manage']
                                       },
                                       {
                                         'name': 'admin',
-                                        'value': user['admin'] == 1 ? true : false
+                                        'value': user['admin']
                                       }
                                     ];
-                                    dialogs.options(context, "test", options, (values) {
+                                    dialogs.options(context, "Edit permissions", options, (values) {
                                       print(values);
                                       // await _removeHomeMember(user['id']);
                                     });

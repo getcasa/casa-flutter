@@ -1,8 +1,11 @@
+import 'package:casa/store/dialogs_store.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Dialogs {
   final inputController = TextEditingController();
+  final dialogsStore = DialogsStore();
 
   void dispose() {
     inputController.dispose();
@@ -124,6 +127,9 @@ class Dialogs {
   }
 
   options(BuildContext context, String title, List<dynamic> options, Function onSuccess) {
+    dialogsStore.setOptions(options);
+    print(dialogsStore.options);
+
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -134,18 +140,20 @@ class Dialogs {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             title: Text(title, style: TextStyle(color: Colors.white),),
-            content: Column(
-              children: options.map((option) {
-                var checkbox = CheckboxListTile(
-                  title: Text(option['name']),
-                  value: option['value'],
-                  onChanged: (bool value) {
-                    var i = options.indexWhere((_option) => _option['name'] == option['name']);
-                    options[i]['value'] = value;
-                  },
-                );
-                return checkbox;
-              }).toList()
+            content: Observer(
+              name: 'dialog options',
+              builder: (_) => Column(
+                children: dialogsStore.options.map((option) {
+                  var checkbox = CheckboxListTile(
+                    title: Text(option['name']),
+                    value: dialogsStore.getValue(option['name']),
+                    onChanged: (bool value) {
+                      dialogsStore.setValue(option['name'], value);
+                    },
+                  );
+                  return checkbox;
+                }).toList()
+              ),
             ),
             actions: <Widget>[
               FlatButton(
