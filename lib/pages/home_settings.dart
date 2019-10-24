@@ -22,6 +22,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
   final homeNameController = TextEditingController();
   final homeAddressController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<dynamic> permissionsOptions = [];
 
   @override
   void initState() {
@@ -73,6 +74,67 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomePage(homeId: '',)),
+    );
+  }
+
+  showEditPermissionsModal(List options) {
+    List<dynamic> _initPermissions = options.map((option) {
+      return option['value'];
+    }).toList();
+    permissionsOptions = [];
+    permissionsOptions.addAll(_initPermissions);
+    setState(() {});
+    
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return Column(
+              children: <Widget>[
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: permissionsOptions.length,
+                  itemBuilder: (BuildContext ctxt, int index) {
+                    return ListTile(
+                      trailing: Switch(
+                        value: permissionsOptions[index],
+                        onChanged: (value) {
+                          print(value);
+                          setModalState(() {
+                            permissionsOptions[index] = value;
+                          });
+                        }
+                      ),
+                      title: Text(options[index]['name'])
+                    );
+                  }
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        print('test');
+                      },
+                    ),
+                    FlatButton(
+                      child: Text('Save'),
+                      onPressed: () {
+                        print('test');
+                      },
+                    )
+                  ],
+                )
+              ]
+            );
+          }
+        );
+      },
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
     );
   }
 
@@ -255,25 +317,22 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                                     var options = [
                                       {
                                         'name': 'read',
-                                        'value': user['read']
+                                        'value': user['read'] == 1 ? true : false
                                       },
                                       {
                                         'name': 'write',
-                                        'value': user['write']
+                                        'value': user['write'] == 1 ? true : false
                                       },
                                       {
                                         'name': 'manage',
-                                        'value': user['manage']
+                                        'value': user['manage'] == 1 ? true : false
                                       },
                                       {
                                         'name': 'admin',
-                                        'value': user['admin']
+                                        'value': user['admin'] == 1 ? true : false
                                       }
                                     ];
-                                    dialogs.options(context, "Edit permissions", options, (values) {
-                                      print(values);
-                                      // await _removeHomeMember(user['id']);
-                                    });
+                                    showEditPermissionsModal(options);
                                     break;
                                   case 'remove':
                                     dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {
