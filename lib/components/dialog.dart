@@ -77,7 +77,13 @@ class Dialogs {
             );
           }
         );
-      }
+      },
+      shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.only(
+          topLeft: Radius.circular(8.0),
+          topRight: Radius.circular(8.0)
+        )
+      )
     );
   }
 
