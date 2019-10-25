@@ -77,7 +77,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
     );
   }
 
-  showEditPermissionsModal(List options) {
+  showEditPermissionsModal(String userId, List options) {
     List<dynamic> _initPermissions = options.map((option) {
       return option['value'];
     }).toList();
@@ -90,50 +90,78 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
-            return Column(
-              children: <Widget>[
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: permissionsOptions.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return ListTile(
-                      trailing: Switch(
-                        value: permissionsOptions[index],
-                        onChanged: (value) {
-                          print(value);
-                          setModalState(() {
-                            permissionsOptions[index] = value;
-                          });
-                        }
+            return Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: <Widget>[
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: permissionsOptions.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      return ListTile(
+                        trailing: Switch(
+                          value: permissionsOptions[index],
+                          onChanged: (value) {
+                            setModalState(() {
+                              permissionsOptions[index] = value;
+                            });
+                          }
+                        ),
+                        title: Text(options[index]['name'])
+                      );
+                    }
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        textColor: Theme.of(context).accentColor,
+                        child: Text('Cancel'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
-                      title: Text(options[index]['name'])
-                    );
-                  }
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    FlatButton(
-                      child: Text('Cancel'),
-                      onPressed: () {
-                        print('test');
-                      },
-                    ),
-                    FlatButton(
-                      child: Text('Save'),
-                      onPressed: () {
-                        print('test');
-                      },
-                    )
-                  ],
-                )
-              ]
+                      FlatButton(
+                        textColor: Theme.of(context).accentColor,
+                        child: Text('Save'),
+                        onPressed: () async {
+                          var response;
+                          try {
+                            response = await request.editHomeMember(
+                              widget.home['id'],
+                              userId,
+                              {
+                                'read': permissionsOptions[0] == true ? "1" : "0",
+                                'write': permissionsOptions[1] == true ? "1" : "0",
+                                'manage': permissionsOptions[2] == true ? "1" : "0",
+                                'admin': permissionsOptions[3] == true ? "1" : "0",
+                              }
+                            );
+                            
+                          } catch (e) {
+                            final snackBar = SnackBar(content: Text(e));
+                            _scaffoldKey.currentState.showSnackBar(snackBar);
+                            return;
+                          }
+                          setState(() {});
+                          Navigator.pop(context);
+                          final snackBar = SnackBar(content: Text(response['message']));
+                          _scaffoldKey.currentState.showSnackBar(snackBar);
+                        },
+                      )
+                    ],
+                  )
+                ]
+              )
             );
           }
         );
       },
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: new BorderRadius.only(
+          topLeft: Radius.circular(8.0),
+          topRight: Radius.circular(8.0)
+        )
       ),
     );
   }
@@ -332,7 +360,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                                         'value': user['admin'] == 1 ? true : false
                                       }
                                     ];
-                                    showEditPermissionsModal(options);
+                                    showEditPermissionsModal(user['id'], options);
                                     break;
                                   case 'remove':
                                     dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {
