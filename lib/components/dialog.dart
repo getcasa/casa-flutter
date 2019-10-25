@@ -1,11 +1,8 @@
-import 'package:casa/store/dialogs_store.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' show ImageFilter;
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Dialogs {
   final inputController = TextEditingController();
-  final dialogsStore = DialogsStore();
 
   void dispose() {
     inputController.dispose();
