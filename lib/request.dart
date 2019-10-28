@@ -228,6 +228,18 @@ class Request {
     return parsedJson;
   }
 
+  Future<dynamic> signup(body) async {
+    var response = await http.post(
+      apiUrl + '/v1/signup',
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 201) {
+      throw(parsedJson['error']);
+    }
+    return parsedJson;
+  }
+
   Future<dynamic> signin(String email, String password) async {
     var response = await http.post(
       apiUrl + '/v1/signin',

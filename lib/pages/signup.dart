@@ -1,23 +1,23 @@
-import 'package:casa/pages/signup.dart';
-import 'package:casa/pages/splash_screen.dart';
+import 'package:casa/pages/signin.dart';
 import 'package:casa/request.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Define a custom Form widget.
-class SignInPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
 
-  _SignInPageState createState() => _SignInPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
 // Define a corresponding State class.
 // This class holds the data related to the Form.
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final passwordConfirmationController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   SharedPreferences prefs;
   Request request = new Request();
@@ -105,6 +105,25 @@ class _SignInPageState extends State<SignInPage> {
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
           ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20.0),
+            child: Material(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: passwordConfirmationController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Password confirmation',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              elevation: 20.0,
+              shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -112,12 +131,12 @@ class _SignInPageState extends State<SignInPage> {
                 onTap: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => SignUpPage()),
+                    MaterialPageRoute(builder: (context) => SignInPage()),
                   );
                 },
                 child: Container(
                   child: Text(
-                    "You don't have an account?",
+                    "You already have an account?",
                     style: TextStyle(
                       color: Theme.of(context).accentColor,
                       decoration: TextDecoration.underline,
@@ -135,17 +154,23 @@ class _SignInPageState extends State<SignInPage> {
                       onPressed: () async {
                         var response;
                         try {
-                          response = await request.signin(emailController.text, passwordController.text);
+                          response = await request.signup({
+                            'email': emailController.text,
+                            'password': passwordController.text,
+                            'passwordConfirmation': passwordConfirmationController.text
+                          });
                         } catch (e) {
                           final snackBar = SnackBar(content: Text(e));
                           _scaffoldKey.currentState.showSnackBar(snackBar);
                           return;
                         }
 
-                        await prefs.setString('token', response['message']);
+                        final snackBar = SnackBar(content: Text(response['message']));
+                        _scaffoldKey.currentState.showSnackBar(snackBar);
+
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => SplashScreen()),
+                          MaterialPageRoute(builder: (context) => SignInPage()),
                         );
                       },
                       child: Icon(
