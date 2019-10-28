@@ -1,6 +1,7 @@
 import 'package:casa/components/dialog.dart';
 import 'package:casa/pages/home_settings.dart';
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/pages/user_settings.dart';
 import 'package:casa/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
@@ -132,6 +133,12 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => HomeSettingsPage(home: homes[homeIndex])),
                   );
                   break;
+                case "user_settings":
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserSettingsPage()),
+                  );
+                  break;
                 default:
               }
             },
@@ -146,8 +153,8 @@ class _HomePageState extends State<HomePage> {
               return [
                 _popupMenuItem,
                 PopupMenuItem(
-                  value: "app_settings",
-                  child: Text("App settings"),
+                  value: "user_settings",
+                  child: Text("My account"),
                 )
               ];
             },

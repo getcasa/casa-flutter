@@ -20,4 +20,10 @@ class CasaStore with Store {
   void setUser(User _user) {
     user = _user;
   }
+
+  @action
+  void updateProfil(String firstname, String lastname) {
+    user.firstname = firstname;
+    user.lastname = lastname;
+  }
 }

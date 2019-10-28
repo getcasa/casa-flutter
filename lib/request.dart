@@ -22,6 +22,19 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> updateUser(String userId, body) async {
+    var response = await http.put(
+      apiUrl + '/v1/users/' + userId,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['message']);
+    }
+    return parsedJson;
+  }
+
   Future<User> getUser(String userId) async {
     if (userId == '') {
       userId = 'me';
