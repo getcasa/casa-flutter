@@ -30,7 +30,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -45,7 +45,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     var _user = User(parsedJson);
     return _user;
@@ -59,7 +59,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -71,7 +71,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -84,7 +84,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -96,7 +96,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -108,7 +108,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -121,7 +121,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -133,7 +133,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -145,7 +145,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -158,7 +158,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -171,7 +171,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -183,7 +183,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
@@ -195,7 +195,7 @@ class Request {
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['message']);
+      throw(parsedJson['error']);
     }
     return parsedJson;
   }
