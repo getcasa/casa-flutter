@@ -1,11 +1,10 @@
 import 'package:casa/components/dialog.dart';
-import 'package:casa/pages/home.dart';
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/pages/splash_screen.dart';
 import 'package:casa/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:simple_gravatar/simple_gravatar.dart';
 import 'package:simple_gravatar/simple_gravatar.dart';
 
 class UserSettingsPage extends StatefulWidget {
@@ -56,6 +55,20 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
               color: Colors.red,
             ),
             onPressed: () {
+              dialogs.confirm(context, "You really want to sign out?", () async {
+                try {
+                  await request.signout();
+                } catch (e) {
+                  final snackBar = SnackBar(content: Text(e));
+                  _scaffoldKey.currentState.showSnackBar(snackBar);
+                  return;
+                }
+                store.user = null;
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => SplashScreen()),
+                );
+              });
             },
           ),
         ],

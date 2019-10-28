@@ -214,6 +214,20 @@ class Request {
     return parsedJson;
   }
 
+  Future<dynamic> signout() async {
+    var response = await http.post(
+      apiUrl + '/v1/signout',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['error']);
+    }
+    await prefs.setString("token", "");
+    token = "";
+    return parsedJson;
+  }
+
   Future<dynamic> signin(String email, String password) async {
     var response = await http.post(
       apiUrl + '/v1/signin',

@@ -1,3 +1,4 @@
+import 'package:casa/pages/splash_screen.dart';
 import 'package:casa/request.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -124,7 +125,7 @@ class _SignInPageState extends State<SignInPage> {
                       await prefs.setString('token', response['message']);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
+                        MaterialPageRoute(builder: (context) => SplashScreen()),
                       );
                     },
                     child: Icon(

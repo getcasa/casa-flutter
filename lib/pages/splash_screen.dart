@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     request.init().then((_token) {
-      if (_token == '') {
+      if (_token == null || _token == '') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),
