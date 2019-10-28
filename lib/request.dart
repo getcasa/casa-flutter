@@ -22,7 +22,33 @@ class Request {
 
   Request._internal();
 
-  Future<dynamic> updateUser(String userId, body) async {
+  Future<dynamic> updateUserPassword(String userId, body) async {
+    var response = await http.put(
+      apiUrl + '/v1/users/' + userId + '/password',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['error']);
+    }
+    return parsedJson;
+  }
+
+  Future<dynamic> updateUserEmail(String userId, body) async {
+    var response = await http.put(
+      apiUrl + '/v1/users/' + userId + '/email',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      throw(parsedJson['error']);
+    }
+    return parsedJson;
+  }
+
+  Future<dynamic> updateUserProfil(String userId, body) async {
     var response = await http.put(
       apiUrl + '/v1/users/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
