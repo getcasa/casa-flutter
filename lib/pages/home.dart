@@ -1,6 +1,7 @@
 import 'package:casa/components/dialog.dart';
 import 'package:casa/pages/home_settings.dart';
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/pages/on_boarding.dart';
 import 'package:casa/pages/user_settings.dart';
 import 'package:casa/store/store.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,13 @@ class _HomePageState extends State<HomePage> {
 
   _getHomes(_homeId) {
     request.getHomes().then((_homes) {
+      if (_homes['data'] == null || _homes['data'].length == 0) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => OnBoardingPage()),
+        );
+      }
+
       setState(() {
         homes = _homes['data'];
         homeId = homes[0]['id'];
