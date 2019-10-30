@@ -12,7 +12,7 @@ class RoomsPage extends StatefulWidget {
   const RoomsPage({Key key, this.homeId}): super(key: key);
 }
 
-class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMixin {
+class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
   List<dynamic> rooms = [];
@@ -23,13 +23,7 @@ class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMix
   void initState() {
     super.initState();
     request.init().then((_token) {
-      _getRooms().then((_rooms) {
-        setState(() {
-          rooms = _rooms['data'] == null ? [] : _rooms['data'];
-          _tabController = TabController(vsync: this, length: rooms.length);
-        });
-      });
-      return;
+      getRooms();
     });
   }
 
@@ -41,9 +35,17 @@ class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMix
     super.dispose();
   }
 
+  Future<Null> getRooms() async {
+    var _rooms = await _getRooms();
+    setState(() {
+      rooms = _rooms['data'] == null ? [] : _rooms['data'];
+      _tabController = TabController(vsync: this, length: rooms.length);
+    });
+  }
+
   Future<Null> addRoom(String name) {
     return request.addRoom(widget.homeId, { 'name': name }).then((room) {
-      print(room);
+      getRooms();
     });
   }
 
@@ -100,7 +102,57 @@ class _RoomsPageState extends State<RoomsPage> with SingleTickerProviderStateMix
       body: rooms == null || rooms.length == 0
         ? Center(
             child: rooms.length == 0
-              ? Text('No rooms')
+              ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "There is no room in your "
+                        ),
+                        TextSpan(
+                          text: "Home",
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          )
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10.0),
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: 45,
+                      child: Material(
+                        child: FlatButton(
+                          padding: EdgeInsets.only(top: 4.0),
+                          onPressed: () {
+                            dialogs.input(context, 'Create a room', 'Name', addRoom);
+                          },
+                          child: Text(
+                            'Add room',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                            )
+                          ),
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                        ),
+                        color: Theme.of(context).accentColor,
+                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                        elevation: 20.0,
+                        shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+                      ),
+                    )
+                  ),
+                ]
+              )
               : CircularProgressIndicator()
           )
         : DefaultTabController(
