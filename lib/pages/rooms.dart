@@ -72,6 +72,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
         ),
         actions: <Widget>[
           PopupMenuButton(
+            icon: Icon(Icons.add),
             onSelected: (select) {
               switch (select) {
                 case "add_room":
@@ -90,9 +91,20 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                   value: "add_device",
                   child: Text("Add device"),
                 ),
+              ];
+            },
+          ),
+          PopupMenuButton(
+            onSelected: (select) {
+              switch (select) {
+                default:
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
                 PopupMenuItem(
-                  value: "settings",
-                  child: Text("Settings"),
+                  value: "room_settings",
+                  child: Text("Room settings"),
                 )
               ];
             },
