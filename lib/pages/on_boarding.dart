@@ -182,7 +182,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> with SingleTickerProvid
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: "That's it, just choose a name for your "
+                            text: "That's it, now choose a name for your "
                           ),
                           TextSpan(
                             text: "Home",
