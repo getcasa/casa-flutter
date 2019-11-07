@@ -4,6 +4,7 @@ import 'package:casa/pages/room_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/components/bottom_navigation.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class RoomsPage extends StatefulWidget {
   @override
@@ -53,6 +54,11 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
   Future<dynamic> _getRooms() async {
     var rooms = await request.getRooms(widget.homeId);
     return rooms;
+  }
+
+  Future<dynamic> _getDevices() async {
+    var devices = await request.getDevices(widget.homeId, rooms[_tabController.index]['id']);
+    return devices;
   }
 
   @override
@@ -180,10 +186,10 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
             controller: _tabController,
             children: rooms.map((room) {
               return Container(
-                padding: EdgeInsets.only(left: 20.0, right: 20.0),
                 child: Column(
                   children: <Widget>[
                     Container(
+                      padding: EdgeInsets.only(left: 20.0, right: 20.0),
                       margin: EdgeInsets.only(top: 20.0),
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -195,9 +201,65 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                       )
                     ),
                     Container(
+                      padding: EdgeInsets.only(left: 20.0, right: 20.0),
                       margin: EdgeInsets.only(top: 40.0),
                       alignment: Alignment.centerLeft,
                       child: StyledTitle('Dev_ices')
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        height: double.infinity,
+                        child: FutureBuilder(
+                          future: _getDevices(),
+                          builder: (context, projectSnap) {
+                            if (projectSnap == null || projectSnap.data == null) {
+                              return CircularProgressIndicator();
+                            }
+                            return GridView.builder(
+                              padding: EdgeInsets.all(20.0),
+                              shrinkWrap: true,
+                              itemCount: projectSnap.data['data'].length,
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 3.0,
+                                crossAxisSpacing: 20.0,
+                                mainAxisSpacing: 20.0
+                              ),
+                              itemBuilder: (BuildContext context, int index) {
+                                var device = projectSnap.data['data'][index];
+
+                                return Container(
+                                  child: Material(
+                                    child: FlatButton(
+                                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                                      onPressed: () async {
+                                        print("ACTION !");
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Text(
+                                            device["name"],
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                          Icon(MdiIcons.lightbulbOutline)
+                                        ]
+                                      ),
+                                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                                    ),
+                                    shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                                    elevation: 20.0,
+                                    shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+                                  ),
+                                );
+                              }
+                            );
+                          },
+                        ),
+                      )
                     )
                   ],
                 )
