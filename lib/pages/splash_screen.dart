@@ -1,6 +1,8 @@
+import 'package:casa/pages/api_settings.dart';
 import 'package:casa/pages/home.dart';
 import 'package:casa/request.dart';
 import 'package:casa/store/store.dart';
+import 'package:casa/structs.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'signin.dart';
@@ -17,26 +19,49 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    request.init().then((_token) {
-      if (_token == null || _token == '') {
+    request.init().then((conf) async {
+      if (request.apiIP == null || request.apiIP == '') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => APISettings()),
+        );
+        return;
+      }
+
+      try {
+        await request.checkServer();
+      } catch (e) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => APISettings()),
+        );
+        return;
+      }
+
+      if (request.token == null || request.token == '') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),
         );
         return;
       }
-      request.getUser('').then((_user) {
-        store.setUser(_user);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
-        );
-      }).catchError((err) {
+
+      User _user;
+      try {
+        _user = await request.getUser('');
+      } catch (e) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),
         );
-      });
+        return;
+      }
+
+      store.setUser(_user);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
+      );
       return;
     });
   }

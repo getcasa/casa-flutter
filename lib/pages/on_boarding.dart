@@ -234,18 +234,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> with SingleTickerProvid
               break;
             case 2:
               try {
-                  await request.addHome({
+                await request.addHome({
                   'name': homeNameController.text
                 });
-                } catch (e) {
-                  final snackBar = SnackBar(content: Text(e));
-                  _scaffoldKey.currentState.showSnackBar(snackBar);
-                  return;
-                }
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
-                );
+              } catch (e) {
+                print(e);
+                final snackBar = SnackBar(content: Text(e));
+                _scaffoldKey.currentState.showSnackBar(snackBar);
+                return;
+              }
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage(homeId: '')),
+              );
               break;
             default:
           }

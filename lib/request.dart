@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:casa/structs.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,247 +10,341 @@ class Request {
   static final Request _singleton = new Request._internal();
   SharedPreferences prefs;
   String token;
-  String apiUrl = 'http://192.168.1.46:3000';
+  String apiIP;
 
   factory Request() {
     return _singleton;
   }
 
-  Future<String> init() async {
+  Future<Null> init() async {
     prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token');
-    return token;
+    apiIP = prefs.getString('apiIP');
+    return;
   }
 
   Request._internal();
 
   Future<dynamic> updateUserPassword(String userId, body) async {
+    var completer = new Completer();
     var response = await http.put(
-      apiUrl + '/v1/users/' + userId + '/password',
+      'http://' + apiIP + '/v1/users/' + userId + '/password',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> updateUserEmail(String userId, body) async {
+    var completer = new Completer();
     var response = await http.put(
-      apiUrl + '/v1/users/' + userId + '/email',
+      'http://' + apiIP + '/v1/users/' + userId + '/email',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> updateUserProfil(String userId, body) async {
+    var completer = new Completer();
     var response = await http.put(
-      apiUrl + '/v1/users/' + userId,
+      'http://' + apiIP + '/v1/users/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
-  Future<User> getUser(String userId) async {
+  Future<dynamic> getUser(String userId) async {
+    var completer = new Completer();
     if (userId == '') {
       userId = 'me';
     }
     var response = await http.get(
-      apiUrl + '/v1/users/' + userId,
+      'http://' + apiIP + '/v1/users/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
     var _user = User(parsedJson);
-    return _user;
+    completer.complete(_user);
+    return completer.future;
   }
 
   Future<dynamic> editHomeMember(String homeId, String userId, body) async {
+    var completer = new Completer();
     var response = await http.put(
-      apiUrl + '/v1/homes/' + homeId + '/members/' + userId,
+      'http://' + apiIP + '/v1/homes/' + homeId + '/members/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> removeHomeMember(String homeId, String userId) async {
+    var completer = new Completer();
     var response = await http.delete(
-      apiUrl + '/v1/homes/' + homeId + '/members/' + userId,
+      'http://' + apiIP + '/v1/homes/' + homeId + '/members/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> addHomeMember(String homeId, body) async {
+    var completer = new Completer();
     var response = await http.post(
-      apiUrl + '/v1/homes/' + homeId + '/members',
+      'http://' + apiIP + '/v1/homes/' + homeId + '/members',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> getHomeMembers(String homeId) async {
+    var completer = new Completer();
     var response = await http.get(
-      apiUrl + '/v1/homes/' + homeId + '/members',
+      'http://' + apiIP + '/v1/homes/' + homeId + '/members',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> getRooms(String homeId) async {
+    var completer = new Completer();
     var response = await http.get(
-      apiUrl + '/v1/homes/' + homeId + '/rooms',
+      'http://' + apiIP + '/v1/homes/' + homeId + '/rooms',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> addRoom(String homeId, body) async {
+    var completer = new Completer();
     var response = await http.post(
-      apiUrl + '/v1/homes/' + homeId + '/rooms',
+      'http://' + apiIP + '/v1/homes/' + homeId + '/rooms',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> getHome(String homeId) async {
+    var completer = new Completer();
     var response = await http.get(
-      apiUrl + '/v1/homes/' + homeId,
+      'http://' + apiIP + '/v1/homes/' + homeId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> getHomes() async {
+    var completer = new Completer();
     var response = await http.get(
-      apiUrl + '/v1/homes',
+      'http://' + apiIP + '/v1/homes',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> editHome(String homeId, body) async {
+    var completer = new Completer();
     var response = await http.put(
-      apiUrl + '/v1/homes/' + homeId,
+      'http://' + apiIP + '/v1/homes/' + homeId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> addHome(body) async {
+    var completer = new Completer();
     var response = await http.post(
-      apiUrl + '/v1/homes',
+      'http://' + apiIP + '/v1/homes',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> deleteHome(String homeId) async {
+    var completer = new Completer();
     var response = await http.delete(
-      apiUrl + '/v1/homes/' + homeId,
+      'http://' + apiIP + '/v1/homes/' + homeId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> signout() async {
+    var completer = new Completer();
     var response = await http.post(
-      apiUrl + '/v1/signout',
+      'http://' + apiIP + '/v1/signout',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
     await prefs.setString("token", "");
     token = "";
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> signup(body) async {
+    var completer = new Completer();
     var response = await http.post(
-      apiUrl + '/v1/signup',
+      'http://' + apiIP + '/v1/signup',
       body: body
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 
   Future<dynamic> signin(String email, String password) async {
+    var completer = new Completer();
     var response = await http.post(
-      apiUrl + '/v1/signin',
+      'http://' + apiIP + '/v1/signin',
       body: {'email': email, 'password': password}
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
-      throw(parsedJson['error']);
+      completer.completeError(parsedJson['message']);
+      return completer.future;
     }
-    return parsedJson;
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
+  Future<dynamic> checkServer() async {
+    var completer = new Completer();
+    var response;
+    try {
+      response = await http.get(
+        'http://' + apiIP + '/casa'
+      );
+    } catch (err) {
+      completer.completeError("test");
+      return completer.future;
+    }
+
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
   }
 }

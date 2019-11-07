@@ -43,7 +43,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
     return request.addHomeMember(widget.home['id'], { 'email': email }).then((data) {
       final snackBar = SnackBar(content: Text(data['message']));
       _scaffoldKey.currentState.showSnackBar(snackBar);
-    }).catchError((err) {
+    }, onError: (err) {
       final snackBar = SnackBar(content: Text(err));
       _scaffoldKey.currentState.showSnackBar(snackBar);
     });

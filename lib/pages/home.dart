@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
     return request.addRoom(homes[homeIndex]['id'], { 'name': name }).then((data) {
       final snackBar = SnackBar(content: Text(name + ' has been created'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
-    }).catchError((err) {
+    }, onError: (err) {
       final snackBar = SnackBar(content: Text(err));
       _scaffoldKey.currentState.showSnackBar(snackBar);
     });
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
       final snackBar = SnackBar(content: Text(name + ' has been created'));
       _scaffoldKey.currentState.showSnackBar(snackBar);
       _getHomes(data['message']);
-    }).catchError((err) {
+    }, onError: (err) {
       final snackBar = SnackBar(content: Text(err));
       _scaffoldKey.currentState.showSnackBar(snackBar);
     });
