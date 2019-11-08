@@ -285,7 +285,7 @@ class _RoomSettingsPageState extends State<RoomSettingsPage> {
                               ),
                             ),
                             trailing: !isOwner && !isMe ? IconButton(
-                              icon: Icon(user['read'] == 1 ? MdiIcons.eyeOutline : MdiIcons.eyeOffOutline),
+                              icon: Icon(user['read'] == true ? MdiIcons.eyeOutline : MdiIcons.eyeOffOutline),
                               tooltip: 'Edit',
                               onPressed: () {
                                 var options = [
