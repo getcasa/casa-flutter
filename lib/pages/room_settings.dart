@@ -108,10 +108,10 @@ class _RoomSettingsPageState extends State<RoomSettingsPage> {
                               widget.room['id'],
                               userId,
                               {
-                                'read': permissionsOptions[0] == true ? "1" : "0",
-                                'write': permissionsOptions[1] == true ? "1" : "0",
-                                'manage': permissionsOptions[2] == true ? "1" : "0",
-                                'admin': permissionsOptions[3] == true ? "1" : "0",
+                                'read': permissionsOptions[0].toString(),
+                                'write': permissionsOptions[1].toString(),
+                                'manage': permissionsOptions[2].toString(),
+                                'admin': permissionsOptions[3].toString(),
                               }
                             );
                             
@@ -291,19 +291,19 @@ class _RoomSettingsPageState extends State<RoomSettingsPage> {
                                 var options = [
                                   {
                                     'name': 'read',
-                                    'value': user['read'] == 1 ? true : false
+                                    'value': user['read']
                                   },
                                   {
                                     'name': 'write',
-                                    'value': user['write'] == 1 ? true : false
+                                    'value': user['write']
                                   },
                                   {
                                     'name': 'manage',
-                                    'value': user['manage'] == 1 ? true : false
+                                    'value': user['manage']
                                   },
                                   {
                                     'name': 'admin',
-                                    'value': user['admin'] == 1 ? true : false
+                                    'value': user['admin']
                                   }
                                 ];
                                 showEditPermissionsModal(user['id'], options);

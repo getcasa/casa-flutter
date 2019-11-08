@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
             },
             itemBuilder: (BuildContext context) {
               PopupMenuItem<String> _popupMenuItem;
-              if (homes[homeIndex]['manage'] == 1 || homes[homeIndex]['admin'] == 1) {
+              if (homes[homeIndex]['manage'] == true || homes[homeIndex]['admin'] == true) {
                 _popupMenuItem = PopupMenuItem(
                   value: "home_settings",
                   child: Text("Home settings"),

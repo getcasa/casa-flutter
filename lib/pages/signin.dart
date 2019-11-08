@@ -19,16 +19,11 @@ class _SignInPageState extends State<SignInPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  SharedPreferences prefs;
   Request request = new Request();
 
   @override
   void initState() {
     super.initState();
-
-    SharedPreferences.getInstance().then((_prefs) {
-      prefs = _prefs;
-    });
   }
 
   @override
@@ -142,7 +137,7 @@ class _SignInPageState extends State<SignInPage> {
                           return;
                         }
 
-                        await prefs.setString('token', response['message']);
+                        await request.prefs.setString('token', response['message']);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => SplashScreen()),
