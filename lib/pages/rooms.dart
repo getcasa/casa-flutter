@@ -1,3 +1,4 @@
+import 'package:casa/components/device_box.dart';
 import 'package:casa/components/dialog.dart';
 import 'package:casa/components/styled_components.dart';
 import 'package:casa/pages/room_settings.dart';
@@ -96,32 +97,9 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                   itemBuilder: (BuildContext context, int index) {
                     var device = rooms[i]['devices'][index];
 
-                    return Container(
-                      child: Material(
-                        child: FlatButton(
-                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                          onPressed: () async {
-                            print("ACTION !");
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                device["name"],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                              Icon(MdiIcons.lightbulbOutline)
-                            ]
-                          ),
-                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                        ),
-                        shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                        elevation: 20.0,
-                        shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-                      )
-                    );
+                    return DeviceBox(device['name'], device['icon'], false, () {
+                      print("Action!");
+                    });
                   },
                 ),
               )
