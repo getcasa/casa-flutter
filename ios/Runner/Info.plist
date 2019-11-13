@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Location is used to know who is at home.</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Location is used to know who is at home.</string>
 </dict>
 </plist>

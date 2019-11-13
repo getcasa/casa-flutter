@@ -9,6 +9,8 @@ import 'package:casa/request.dart';
 import 'package:casa/components/bottom_navigation.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -32,10 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    request.init().then((_token) {
-      _getHomes(widget.homeId);
-      return;
-    });
+    _getHomes(widget.homeId);
   }
 
   _getHomes(_homeId) {
