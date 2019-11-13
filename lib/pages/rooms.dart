@@ -25,9 +25,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    request.init().then((_token) {
-      getRooms();
-    });
+    getRooms();
   }
 
   @override
