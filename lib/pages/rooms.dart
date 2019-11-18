@@ -2,6 +2,7 @@ import 'package:casa/components/device_box.dart';
 import 'package:casa/components/dialog.dart';
 import 'package:casa/components/styled_components.dart';
 import 'package:casa/pages/room_settings.dart';
+import 'package:casa/pages/select_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/components/bottom_navigation.dart';
@@ -130,6 +131,12 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
               switch (select) {
                 case "add_room":
                   dialogs.input(context, 'Create a room', 'Name', addRoom);
+                  break;
+                case "add_device":
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SelectPlugin(homeId: widget.homeId, rooms: rooms)),
+                  );
                   break;
                 default:
               }
