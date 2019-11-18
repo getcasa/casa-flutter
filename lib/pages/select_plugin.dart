@@ -1,4 +1,4 @@
-import 'package:casa/pages/add_device.dart';
+import 'package:casa/pages/discovered_devices.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -50,7 +50,7 @@ class _SelectPluginState extends State<SelectPlugin> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddDevice(homeId: widget.homeId, rooms: widget.rooms, plugin: plugin)),
+                      MaterialPageRoute(builder: (context) => DiscoveredDevices(homeId: widget.homeId, rooms: widget.rooms, plugin: plugin)),
                     );
                   },
                   trailing: Icon(MdiIcons.arrowRight),

@@ -25,6 +25,22 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> getDiscoveredDevices(String pluginName) async {
+    var completer = new Completer();
+    var response = await http.get(
+      'http://' + apiIP + '/v1/gateways/discover/' + pluginName,
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> getAvailablePlugins(String homeId) async {
     var completer = new Completer();
     var response = await http.get(

@@ -10,7 +10,8 @@ class AddDevice extends StatefulWidget {
   final dynamic homeId;
   final List<dynamic> rooms;
   final dynamic plugin;
-  const AddDevice({Key key, this.homeId, this.rooms, this.plugin}): super(key: key);
+  final dynamic device;
+  const AddDevice({Key key, this.homeId, this.rooms, this.plugin, this.device}): super(key: key);
 }
 
 class _AddDeviceState extends State<AddDevice> {
@@ -28,7 +29,11 @@ class _AddDeviceState extends State<AddDevice> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: Text('data')
+      body: Column(
+        children: <Widget>[
+          Text('data')
+        ],
+      )
     );
   }
 }
