@@ -25,6 +25,23 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> addDevice(String homeId, String roomId, dynamic body) async {
+    var completer = new Completer();
+    var response = await http.post(
+      'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 201) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> getDiscoveredDevices(String pluginName) async {
     var completer = new Completer();
     var response = await http.get(

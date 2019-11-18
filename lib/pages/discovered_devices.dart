@@ -56,7 +56,7 @@ class _DiscoveredDevicesState extends State<DiscoveredDevices> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AddDevice(homeId: widget.homeId, rooms: widget.rooms, plugin: widget.plugin, device: device)),
+                        MaterialPageRoute(builder: (context) => AddDevice(homeId: widget.homeId, rooms: widget.rooms, device: device)),
                       );
                     },
                     trailing: Icon(MdiIcons.arrowRight),
