@@ -23,11 +23,15 @@ class DeviceBox extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              text,
-              style: TextStyle(
-                color: isClicked ? Colors.white : Colors.black,
-                fontWeight: FontWeight.bold
+            Flexible(
+              flex: 1,
+              child: Text(
+                text,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: isClicked ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.bold
+                ),
               ),
             ),
             Icon(
