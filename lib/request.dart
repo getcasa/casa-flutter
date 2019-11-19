@@ -42,10 +42,10 @@ class Request {
     return completer.future;
   }
 
-  Future<dynamic> getDiscoveredDevices(String pluginName) async {
+  Future<dynamic> getDiscoveredDevices(String homeId, String pluginName) async {
     var completer = new Completer();
     var response = await http.get(
-      'http://' + apiIP + '/v1/gateways/discover/' + pluginName,
+      'http://' + apiIP + '/v1/homes/' + homeId + '/gateways/discover/' + pluginName,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
     );
     var parsedJson = json.decode(response.body);

@@ -23,7 +23,7 @@ class _DiscoveredDevicesState extends State<DiscoveredDevices> {
   }
 
   Future<dynamic> _getDevices() async {
-    var devices = await request.getDiscoveredDevices(widget.plugin['Name']);
+    var devices = await request.getDiscoveredDevices(widget.homeId, widget.plugin['Name']);
     return devices;
   }
 
