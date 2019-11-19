@@ -45,8 +45,8 @@ class _SelectPluginState extends State<SelectPlugin> {
               return Container(
                 margin: EdgeInsets.only(bottom: 5),
                 child: ListTile(
-                  title: Text(plugin['Name']),
-                  subtitle: Text(plugin['Description']),
+                  title: Text(plugin['name']),
+                  subtitle: Text(plugin['description']),
                   onTap: () {
                     Navigator.push(
                       context,
