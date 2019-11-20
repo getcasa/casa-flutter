@@ -25,6 +25,23 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> callAction(String homeId, String roomId, String deviceId, dynamic body) async {
+    var completer = new Completer();
+    var response = await http.post(
+      'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices/' + deviceId + '/actions',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+      body: body
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> addDevice(String homeId, String roomId, dynamic body) async {
     var completer = new Completer();
     var response = await http.post(

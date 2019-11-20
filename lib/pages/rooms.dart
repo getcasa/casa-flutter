@@ -38,7 +38,11 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
   }
 
   Future<Null> getRooms() async {
-    var _rooms = await _getRooms();
+    List<dynamic> _rooms = await _getRooms();
+    for (var i = 0; i < _rooms.length; i++) {
+      var devices = await request.getDevices(widget.homeId, _rooms[i]['id']);
+      _rooms[i]['devices'] = devices;
+    }
     setState(() {
       rooms = _rooms;
       _tabController = TabController(vsync: this, length: rooms.length);
@@ -96,8 +100,11 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                   itemBuilder: (BuildContext context, int index) {
                     var device = rooms[i]['devices'][index];
 
-                    return DeviceBox(device['name'], device['icon'], false, () {
-                      print("Action!");
+                    return DeviceBox(device['name'], device['icon'], false, () async {
+                      if (device['defaultAction'] == null || device['defaultAction'] == '') return
+                      await request.callAction(widget.homeId, rooms[i]['id'], device['id'], {
+                        'action': device['defaultAction']
+                      });
                     });
                   },
                 ),
