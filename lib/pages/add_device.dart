@@ -118,6 +118,17 @@ class _AddDevicePageState extends State<AddDevicePage> {
             )
           ),
           Container(
+            margin: EdgeInsets.only(top: 10),
+            alignment: Alignment.center,
+            child: Text(
+              'Choose icon...',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black54
+              )
+            )
+          ),
+          Container(
             padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
             alignment: Alignment.centerLeft,
             child: StyledTitle('Na_me'),
@@ -207,7 +218,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
                     );
                   },
                   child: Text(
-                    'Save',
+                    'Add',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white
