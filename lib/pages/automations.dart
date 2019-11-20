@@ -59,7 +59,10 @@ class _AutomationsPageState extends State<AutomationsPage> {
                 future: _getAutomations(),
                 builder: (context, projectSnap) {
                   if (projectSnap == null || projectSnap.data == null) {
-                    return CircularProgressIndicator();
+                    return Container(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator()
+                    );
                   }
                   return RefreshIndicator(
                     key: _refreshIndicatorKey,
