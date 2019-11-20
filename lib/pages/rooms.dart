@@ -101,7 +101,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                     var device = rooms[i]['devices'][index];
 
                     return DeviceBox(device['name'], device['icon'], false, () async {
-                      if (device['defaultAction'] == null || device['defaultAction'] == '') return
+                      if (device['defaultAction'] == null || device['defaultAction'] == '') return;
                       await request.callAction(widget.homeId, rooms[i]['id'], device['id'], {
                         'action': device['defaultAction']
                       });
