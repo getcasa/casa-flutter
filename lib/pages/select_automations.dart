@@ -1,5 +1,6 @@
 import 'package:casa/components/bottom_navigation.dart';
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/pages/add_automation.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -38,7 +39,10 @@ class _SelectAutomationsPageState extends State<SelectAutomationsPage> {
               MdiIcons.plus,
             ),
             onPressed: () {
-              print('add');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddAutomationPage(homeId: widget.homeId)),
+              );
             },
           ),
         ],
@@ -76,7 +80,6 @@ class _SelectAutomationsPageState extends State<SelectAutomationsPage> {
                           child: ListTile(
                             title: Text(automation['name']),
                             onTap: () {
-                              print(automation);
                             },
                             trailing: Icon(MdiIcons.arrowRight),
                           )
