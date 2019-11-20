@@ -142,7 +142,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                 case "add_device":
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SelectPlugin(homeId: widget.homeId, rooms: rooms)),
+                    MaterialPageRoute(builder: (context) => SelectPluginPage(homeId: widget.homeId, rooms: rooms)),
                   );
                   break;
                 default:
