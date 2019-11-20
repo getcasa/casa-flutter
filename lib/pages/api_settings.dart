@@ -15,6 +15,17 @@ class _APISettingsState extends State<APISettings> {
   final apiIPController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    var _apiIP = request.prefs.getString('apiIP');
+    if (_apiIP != null && _apiIP != '') {
+      setState(() {
+        apiIPController.text = _apiIP;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
