@@ -25,6 +25,22 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> getAutomations(String homeId) async {
+    var completer = new Completer();
+    var response = await http.get(
+      'http://' + apiIP + '/v1/homes/' + homeId + '/automations',
+      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> callAction(String homeId, String roomId, String deviceId, dynamic body) async {
     var completer = new Completer();
     var response = await http.post(

@@ -1,3 +1,4 @@
+import 'package:casa/pages/automations.dart';
 import 'package:casa/pages/home.dart';
 import 'package:casa/pages/rooms.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,12 @@ class BottomNavigation extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => RoomsPage(homeId: homeId)),
+            );
+            break;
+          case 2:
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AutomationsPage(homeId: homeId)),
             );
             break;
           default:
