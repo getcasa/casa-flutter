@@ -136,7 +136,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
             icon: Icon(Icons.add),
             onSelected: (select) {
               switch (select) {
-                case "add_room":
+                case "create_room":
                   dialogs.input(context, 'Create a room', 'Name', addRoom);
                   break;
                 case "add_device":
@@ -151,8 +151,8 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
             itemBuilder: (BuildContext context) {
               return [
                 PopupMenuItem(
-                  value: "add_room",
-                  child: Text("Add room"),
+                  value: "create_room",
+                  child: Text("Create room"),
                 ),
                 PopupMenuItem(
                   value: "add_device",
