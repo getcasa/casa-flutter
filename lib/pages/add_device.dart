@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class AddDevice extends StatefulWidget {
+class AddDevicePage extends StatefulWidget {
   @override
-  _AddDeviceState createState() => _AddDeviceState();
+  _AddDevicePageState createState() => _AddDevicePageState();
 
   final dynamic homeId;
   final List<dynamic> rooms;
   final dynamic device;
-  const AddDevice({Key key, this.homeId, this.rooms, this.device}): super(key: key);
+  const AddDevicePage({Key key, this.homeId, this.rooms, this.device}): super(key: key);
 }
 
-class _AddDeviceState extends State<AddDevice> {
+class _AddDevicePageState extends State<AddDevicePage> {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
   final deviceNameController = TextEditingController();
