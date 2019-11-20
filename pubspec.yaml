@@ -22,7 +22,7 @@ dependencies:
   http: ^0.12.0+2
   shared_preferences: ^0.5.3+4
   cupertino_icons: ^0.1.2
-  material_design_icons_flutter: ^3.3.4595
+  material_design_icons_flutter: ^3.4.4595
   simple_gravatar: ^1.0.5
   mobx: ^0.3.8+1
   flutter_mobx: ^0.3.3+1
