@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class AutomationsPage extends StatefulWidget {
+class SelectAutomationsPage extends StatefulWidget {
   @override
-  _AutomationsPageState createState() => _AutomationsPageState();
+  _SelectAutomationsPageState createState() => _SelectAutomationsPageState();
 
   final dynamic homeId;
-  const AutomationsPage({Key key, this.homeId}): super(key: key);
+  const SelectAutomationsPage({Key key, this.homeId}): super(key: key);
 }
 
-class _AutomationsPageState extends State<AutomationsPage> {
+class _SelectAutomationsPageState extends State<SelectAutomationsPage> {
   Request request = new Request();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
