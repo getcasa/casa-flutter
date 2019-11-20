@@ -45,7 +45,7 @@ class _SelectPluginPageState extends State<SelectPluginPage> {
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(right: 20, left: 20, top: 5),
             child: Text(
-              'Select the mark or category of your device',
+              'This is all of plugins installed on Casa. Select the mark or category of your device.',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black54
@@ -81,7 +81,7 @@ class _SelectPluginPageState extends State<SelectPluginPage> {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => DiscoveredDevices(homeId: widget.homeId, rooms: widget.rooms, plugin: plugin)),
+                                MaterialPageRoute(builder: (context) => DiscoveredDevicesPage(homeId: widget.homeId, rooms: widget.rooms, plugin: plugin)),
                               );
                             },
                             trailing: Icon(MdiIcons.arrowRight),

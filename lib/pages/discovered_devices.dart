@@ -1,19 +1,20 @@
+import 'package:casa/components/styled_components.dart';
 import 'package:casa/pages/add_device.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class DiscoveredDevices extends StatefulWidget {
+class DiscoveredDevicesPage extends StatefulWidget {
   @override
-  _DiscoveredDevicesState createState() => _DiscoveredDevicesState();
+  _DiscoveredDevicesPageState createState() => _DiscoveredDevicesPageState();
 
   final dynamic homeId;
   final List<dynamic> rooms;
   final dynamic plugin;
-  const DiscoveredDevices({Key key, this.homeId, this.rooms, this.plugin}): super(key: key);
+  const DiscoveredDevicesPage({Key key, this.homeId, this.rooms, this.plugin}): super(key: key);
 }
 
-class _DiscoveredDevicesState extends State<DiscoveredDevices> {
+class _DiscoveredDevicesPageState extends State<DiscoveredDevicesPage> {
   Request request = new Request();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
@@ -34,39 +35,68 @@ class _DiscoveredDevicesState extends State<DiscoveredDevices> {
         backgroundColor: Colors.transparent,
         elevation: 0.0
       ),
-      body: FutureBuilder(
-        future: _getDevices(),
-        builder: (context, projectSnap) {
-          if (projectSnap == null || projectSnap.data == null) {
-            return CircularProgressIndicator();
-          }
-          return RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: _getDevices,
-            child: ListView.builder(
-              itemCount: projectSnap.data.length,
-              itemBuilder: (context, index) {
-                var device = projectSnap.data[index];
-
-                return Container(
-                  margin: EdgeInsets.only(bottom: 5),
-                  child: ListTile(
-                    title: Text(device['physicalName']),
-                    subtitle: Text(device['physicalId']),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddDevice(homeId: widget.homeId, rooms: widget.rooms, device: device)),
-                      );
-                    },
-                    trailing: Icon(MdiIcons.arrowRight),
-                  )
-                );
-              },
+      body: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(right: 20, left: 20),
+            child: StyledTitle('Dev_ices')
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(right: 20, left: 20, top: 5),
+            child: Text(
+              'This is all of ' + widget.plugin['name'] + ' devices discovered on your network. Select a device to add it to Casa.',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black54
+              )
             )
-          );
-        },
-      ),
+          ),
+          Flexible(
+            flex: 1,
+            child: Container(
+              margin: EdgeInsets.only(top: 10),
+              height: double.infinity,
+              child: FutureBuilder(
+                future: _getDevices(),
+                builder: (context, projectSnap) {
+                  if (projectSnap == null || projectSnap.data == null) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator()
+                    );
+                  }
+                  return RefreshIndicator(
+                    key: _refreshIndicatorKey,
+                    onRefresh: _getDevices,
+                    child: ListView.builder(
+                      itemCount: projectSnap.data.length,
+                      itemBuilder: (context, index) {
+                        var device = projectSnap.data[index];
+                        return Container(
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: ListTile(
+                            title: Text(device['physicalName']),
+                            subtitle: Text(device['physicalId']),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => AddDevice(homeId: widget.homeId, rooms: widget.rooms, device: device)),
+                              );
+                            },
+                            trailing: Icon(MdiIcons.arrowRight),
+                          )
+                        );
+                      },
+                    )
+                  );
+                },
+              )
+            )
+          )
+        ]
+      )
     );
   }
 }
