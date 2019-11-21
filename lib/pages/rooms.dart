@@ -41,6 +41,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
     List<dynamic> _rooms = await _getRooms();
     for (var i = 0; i < _rooms.length; i++) {
       var devices = await request.getDevices(widget.homeId, _rooms[i]['id']);
+      print(devices);
       _rooms[i]['devices'] = devices;
     }
     setState(() {
