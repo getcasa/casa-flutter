@@ -25,6 +25,26 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> addAutomation(String homeId, dynamic body) async {
+    var completer = new Completer();
+    var response = await http.post(
+      'http://' + apiIP + '/v1/homes/' + homeId + '/automations',
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(body)
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 201) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> getAutomations(String homeId) async {
     var completer = new Completer();
     var response = await http.get(
@@ -45,8 +65,11 @@ class Request {
     var completer = new Completer();
     var response = await http.post(
       'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices/' + deviceId + '/actions',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -62,8 +85,11 @@ class Request {
     var completer = new Completer();
     var response = await http.post(
       'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
@@ -144,7 +170,7 @@ class Request {
     var response = await http.put(
       'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -161,7 +187,7 @@ class Request {
     var response = await http.put(
       'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/members/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -194,7 +220,7 @@ class Request {
     var response = await http.put(
       'http://' + apiIP + '/v1/users/' + userId + '/password',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -211,7 +237,7 @@ class Request {
     var response = await http.put(
       'http://' + apiIP + '/v1/users/' + userId + '/email',
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -228,7 +254,7 @@ class Request {
     var response = await http.put(
       'http://' + apiIP + '/v1/users/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -264,7 +290,7 @@ class Request {
     var response = await http.put(
       'http://' + apiIP + '/v1/homes/' + homeId + '/members/' + userId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     print(parsedJson);
@@ -298,8 +324,11 @@ class Request {
     var completer = new Completer();
     var response = await http.post(
       'http://' + apiIP + '/v1/homes/' + homeId + '/members',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
@@ -347,8 +376,11 @@ class Request {
     var completer = new Completer();
     var response = await http.post(
       'http://' + apiIP + '/v1/homes/' + homeId + '/rooms',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
@@ -397,7 +429,7 @@ class Request {
     var response = await http.put(
       'http://' + apiIP + '/v1/homes/' + homeId,
       headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -413,8 +445,11 @@ class Request {
     var completer = new Completer();
     var response = await http.post(
       'http://' + apiIP + '/v1/homes',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
-      body: body
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
@@ -446,7 +481,10 @@ class Request {
     var completer = new Completer();
     var response = await http.post(
       'http://' + apiIP + '/v1/signout',
-      headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 200) {
@@ -464,7 +502,10 @@ class Request {
     var completer = new Completer();
     var response = await http.post(
       'http://' + apiIP + '/v1/signup',
-      body: body
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
     if (response.statusCode != 201) {
