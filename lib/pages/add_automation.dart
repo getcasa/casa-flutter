@@ -478,7 +478,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                         "name": automationNameController.text,
                         "trigger": conditions.map((condition) => condition['deviceId']).toList(),
                         "triggerKey": conditions.map((condition) => condition['deviceField']).toList(),
-                        "triggerValue": conditions.map((condition) => condition['deviceValue']).toList(),
+                        "triggerValue": conditions.map((condition) => condition['deviceValueOperator'] + condition['deviceValue']).toList(),
                         "triggerOperator": triggerOperators,
                         "action": actions.map((action) => action['deviceId']).toList(),
                         "actionCall": actions.map((action) => action['deviceAction']).toList(),
