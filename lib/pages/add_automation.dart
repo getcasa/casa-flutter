@@ -21,6 +21,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   List<dynamic> conditions = [];
   List<dynamic> triggerDevices = [];
+  List<String> triggerOperators = [];
   List<dynamic> actionDevices = [];
   List<dynamic> actions = [];
 
@@ -296,6 +297,10 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                       child: Icon(MdiIcons.plus),
                       onPressed: () {
                         createCondition();
+                        triggerOperators.add("AND");
+                        setState(() {
+                          triggerOperators = triggerOperators;
+                        });
                       },
                     )
                   )
@@ -361,7 +366,22 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                         fontWeight: FontWeight.bold
                       )
                     ),
-                    deviceValueInput(condition, i)
+                    deviceValueInput(condition, i),
+                    (conditions.length > 1 && conditions.length != i + 1) ?
+                      DropdownButton<String>(
+                        value: triggerOperators[i],
+                        items: ['AND', 'OR'].map<DropdownMenuItem<String>>((triggerOperator) {
+                          return DropdownMenuItem<String>(
+                            value: triggerOperator,
+                            child: Text(triggerOperator),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            triggerOperators[i] = value;
+                          });
+                        },
+                      ) : Container()
                   ],
                 ));
               }).values.toList(),
@@ -459,7 +479,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                         "trigger": conditions.map((condition) => condition['deviceId']).toList(),
                         "triggerKey": conditions.map((condition) => condition['deviceField']).toList(),
                         "triggerValue": conditions.map((condition) => condition['deviceValue']).toList(),
-                        "triggerOperator": [],
+                        "triggerOperator": triggerOperators,
                         "action": actions.map((action) => action['deviceId']).toList(),
                         "actionCall": actions.map((action) => action['deviceAction']).toList(),
                         "actionValue": actions.map((action) => json.encode(action['deviceValues'])).toList(),
