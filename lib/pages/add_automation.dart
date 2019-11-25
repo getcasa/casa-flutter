@@ -195,6 +195,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                 hintText: deviceAction['fields'][i]['name']
               ),
               onChanged: (value) {
+                print(value);
                 setState(() {
                   actions[index]['deviceValues'][deviceAction['fields'][i]['name']] = value;
                 });
@@ -211,7 +212,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
               ),
               onChanged: (value) {
                 setState(() {
-                  actions[index]['deviceValues'][deviceAction['fields'][i]['name']] = value;
+                  actions[index]['deviceValues'][deviceAction['fields'][i]['name']] = int.parse(value);
                 });
               },
             )
@@ -461,7 +462,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                         "triggerOperator": [],
                         "action": actions.map((action) => action['deviceId']).toList(),
                         "actionCall": actions.map((action) => action['deviceAction']).toList(),
-                        "actionValue": actions.map((action) => json.encode(action['deviceValues']).toString()).toList(),
+                        "actionValue": actions.map((action) => json.encode(action['deviceValues'])).toList(),
                         "status": true
                       };
                       try {
