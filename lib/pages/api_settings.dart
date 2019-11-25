@@ -81,7 +81,6 @@ class _APISettingsState extends State<APISettings> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () async {
-          print(apiIPController.text);
           request.apiIP = apiIPController.text;
           await request.prefs.setString("apiIP", apiIPController.text);
           Navigator.pushReplacement(

@@ -293,9 +293,7 @@ class Request {
       body: json.encode(body)
     );
     var parsedJson = json.decode(response.body);
-    print(parsedJson);
     if (response.statusCode != 200) {
-      print(parsedJson['message']);
       completer.completeError(parsedJson['message']);
       return completer.future;
     }
