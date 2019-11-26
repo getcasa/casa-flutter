@@ -176,7 +176,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
     var actionDevice = actionDevices.firstWhere((device) => device['id'] == action['deviceId']);
     var deviceAction = actionDevice['pluginActions'].firstWhere((_action) => _action['name'] == action['deviceAction']);
     if (deviceAction['fields'] == null || deviceAction['fields'].length == 0) {
-      return Container();
+      return Container(width: 0, height: 0);
     }
     List<Widget> children = [
       Text(
@@ -244,6 +244,26 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
     );
   }
 
+  Widget conditionOperator(int index) {
+    if (conditions.length > 1 && conditions.length != index + 1) {
+      return DropdownButton<String>(
+        value: triggerOperators[index],
+        items: ['AND', 'OR'].map<DropdownMenuItem<String>>((triggerOperator) {
+          return DropdownMenuItem<String>(
+            value: triggerOperator,
+            child: Text(triggerOperator),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            triggerOperators[index] = value;
+          });
+        },
+      );
+    }
+    return Container(width: 0, height: 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -308,83 +328,80 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
             ),
             Column(
               children: conditions.asMap().map((i, condition) {
-                return MapEntry(i, Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'When ',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
+                return MapEntry(i, Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'When ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            )
+                          ),
+                          DropdownButton<String>(
+                            value: condition['deviceId'],
+                            items: triggerDevices.map<DropdownMenuItem<String>>((device) {
+                              return DropdownMenuItem<String>(
+                                value: device['id'],
+                                child: Text(device['name']),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              var device = triggerDevices.firstWhere((device) => device['id'] == value);
+                              setState(() {
+                                conditions[i]['deviceId'] = value;
+                                conditions[i]['deviceName'] = device['name'];
+                                conditions[i]['deviceField'] = device['pluginDevice']['triggers'][0]['name'];
+                                conditions[i]['deviceValue'] = null;
+                                conditions[i]['deviceValueOperator'] = device['pluginDevice']['triggers'][0]['type'] == 'int' ? '=' : '';
+                              });
+                            },
+                          ),
+                          Text(
+                            ' has ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            )
+                          ),
+                          DropdownButton<String>(
+                            value: condition['deviceField'],
+                            items: triggerDevices.firstWhere((device) => device['id'] == condition['deviceId'])['pluginDevice']['triggers'].map<DropdownMenuItem<String>>((trigger) {
+                              return DropdownMenuItem<String>(
+                                value: trigger['name'],
+                                child: Text(trigger['name']),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              var device = triggerDevices.firstWhere((device) => device['id'] == condition['deviceId']);
+                              setState(() {
+                                conditions[i]['deviceField'] = value;
+                                conditions[i]['deviceValue'] = null;
+                                conditions[i]['deviceValueOperator'] = device['pluginDevice']['triggers'].firstWhere((trigger) => trigger['name'] == value)['type'] == 'int' ? '=' : '';
+                              });
+                            },
+                          ),
+                          Text(
+                            ' ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            )
+                          ),
+                          deviceValueInput(condition, i)
+                        ],
+                      ),
+                      Container(
+                        child: conditionOperator(i)
                       )
-                    ),
-                    DropdownButton<String>(
-                      value: condition['deviceId'],
-                      items: triggerDevices.map<DropdownMenuItem<String>>((device) {
-                        return DropdownMenuItem<String>(
-                          value: device['id'],
-                          child: Text(device['name']),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        var device = triggerDevices.firstWhere((device) => device['id'] == value);
-                        setState(() {
-                          conditions[i]['deviceId'] = value;
-                          conditions[i]['deviceName'] = device['name'];
-                          conditions[i]['deviceField'] = device['pluginDevice']['triggers'][0]['name'];
-                          conditions[i]['deviceValue'] = null;
-                          conditions[i]['deviceValueOperator'] = device['pluginDevice']['triggers'][0]['type'] == 'int' ? '=' : '';
-                        });
-                      },
-                    ),
-                    Text(
-                      ' has a ',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                      )
-                    ),
-                    DropdownButton<String>(
-                      value: condition['deviceField'],
-                      items: triggerDevices.firstWhere((device) => device['id'] == condition['deviceId'])['pluginDevice']['triggers'].map<DropdownMenuItem<String>>((trigger) {
-                        return DropdownMenuItem<String>(
-                          value: trigger['name'],
-                          child: Text(trigger['name']),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        var device = triggerDevices.firstWhere((device) => device['id'] == condition['deviceId']);
-                        setState(() {
-                          conditions[i]['deviceField'] = value;
-                          conditions[i]['deviceValue'] = null;
-                          conditions[i]['deviceValueOperator'] = device['pluginDevice']['triggers'].firstWhere((trigger) => trigger['name'] == value)['type'] == 'int' ? '=' : '';
-                        });
-                      },
-                    ),
-                    Text(
-                      ' ',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                      )
-                    ),
-                    deviceValueInput(condition, i),
-                    (conditions.length > 1 && conditions.length != i + 1) ?
-                      DropdownButton<String>(
-                        value: triggerOperators[i],
-                        items: ['AND', 'OR'].map<DropdownMenuItem<String>>((triggerOperator) {
-                          return DropdownMenuItem<String>(
-                            value: triggerOperator,
-                            child: Text(triggerOperator),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            triggerOperators[i] = value;
-                          });
-                        },
-                      ) : Container()
-                  ],
+                    ]
+                  )
                 ));
               }).values.toList(),
             ),
@@ -411,59 +428,63 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
               ),
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: actions.asMap().map((i, action) {
-                return MapEntry(i, Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Do on ',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                      )
-                    ),
-                    DropdownButton<String>(
-                      value: action['deviceId'],
-                      items: actionDevices.map<DropdownMenuItem<String>>((device) {
-                        return DropdownMenuItem<String>(
-                          value: device['id'],
-                          child: Text(device['name']),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        var device = actionDevices.firstWhere((device) => device['id'] == value);
-                        setState(() {
-                          actions[i]['deviceId'] = value;
-                          actions[i]['deviceName'] = device['name'];
-                          actions[i]['deviceAction'] = device['pluginActions'][0]['name'];
-                          actions[i]['deviceValues'] = {};
-                        });
-                      },
-                    ),
-                    Text(
-                      ' action ',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold
-                      )
-                    ),
-                    DropdownButton<String>(
-                      value: action['deviceAction'],
-                      items: actionDevices.firstWhere((device) => device['id'] == action['deviceId'])['pluginActions'].map<DropdownMenuItem<String>>((action) {
-                        return DropdownMenuItem<String>(
-                          value: action['name'],
-                          child: Text(action['name']),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          actions[i]['deviceAction'] = value;
-                          actions[i]['deviceValues'] = {};
-                        });
-                      },
-                    ),
-                    deviceValuesInputs(action, i)
-                  ],
+                return MapEntry(i, Container(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        'Do on ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
+                      DropdownButton<String>(
+                        value: action['deviceId'],
+                        items: actionDevices.map<DropdownMenuItem<String>>((device) {
+                          return DropdownMenuItem<String>(
+                            value: device['id'],
+                            child: Text(device['name']),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          var device = actionDevices.firstWhere((device) => device['id'] == value);
+                          setState(() {
+                            actions[i]['deviceId'] = value;
+                            actions[i]['deviceName'] = device['name'];
+                            actions[i]['deviceAction'] = device['pluginActions'][0]['name'];
+                            actions[i]['deviceValues'] = {};
+                          });
+                        },
+                      ),
+                      Text(
+                        ' action ',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
+                      DropdownButton<String>(
+                        value: action['deviceAction'],
+                        items: actionDevices.firstWhere((device) => device['id'] == action['deviceId'])['pluginActions'].map<DropdownMenuItem<String>>((action) {
+                          return DropdownMenuItem<String>(
+                            value: action['name'],
+                            child: Text(action['name']),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            actions[i]['deviceAction'] = value;
+                            actions[i]['deviceValues'] = {};
+                          });
+                        },
+                      ),
+                      deviceValuesInputs(action, i)
+                    ],
+                  )
                 ));
               }).values.toList(),
             ),
