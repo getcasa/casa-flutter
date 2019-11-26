@@ -78,23 +78,28 @@ class _OnBoardingPageState extends State<OnBoardingPage> with SingleTickerProvid
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
+                    Container(
+                      margin: EdgeInsets.only(right: 20, left: 20),
+                      alignment: Alignment.center,
+                      child: Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "Casa ",
+                              style: TextStyle(
+                                color: Colors.white,
+                              )
+                            ),
+                            TextSpan(
+                              text: "connect together all your accessories on a single application."
+                            ),
+                          ],
                         ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "All accessories in a single "
-                          ),
-                          TextSpan(
-                            text: "app",
-                            style: TextStyle(
-                              color: Colors.white,
-                            )
-                          ),
-                        ],
+                        textAlign: TextAlign.center
                       ),
                     ),
                     Container(
@@ -174,24 +179,28 @@ class _OnBoardingPageState extends State<OnBoardingPage> with SingleTickerProvid
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
+                    Container(
+                      margin: EdgeInsets.only(right: 20, left: 20),
+                      child: Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: "First of all, choose a name for your "
+                            ),
+                            TextSpan(
+                              text: "home",
+                              style: TextStyle(
+                                color: Colors.white,
+                              )
+                            ),
+                          ],
                         ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: "That's it, now choose a name for your "
-                          ),
-                          TextSpan(
-                            text: "Home",
-                            style: TextStyle(
-                              color: Colors.white,
-                            )
-                          ),
-                        ],
-                      ),
+                        textAlign: TextAlign.center,
+                      )
                     ),
                     Container(
                       padding: EdgeInsets.only(
