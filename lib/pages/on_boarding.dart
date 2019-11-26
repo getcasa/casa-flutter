@@ -247,7 +247,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> with SingleTickerProvid
                   'name': homeNameController.text
                 });
               } catch (e) {
-                print(e);
                 final snackBar = SnackBar(content: Text(e));
                 _scaffoldKey.currentState.showSnackBar(snackBar);
                 return;

@@ -196,7 +196,6 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                 hintText: deviceAction['fields'][i]['name']
               ),
               onChanged: (value) {
-                print(value);
                 setState(() {
                   actions[index]['deviceValues'][deviceAction['fields'][i]['name']] = value;
                 });
