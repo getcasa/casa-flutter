@@ -53,7 +53,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
       'deviceName': triggerDevices[0]['name'],
       'deviceField': triggerDevices[0]['pluginDevice']['triggers'][0]['name'],
       'deviceValue': null,
-      'deviceValueOperator': '='
+      'deviceValueOperator': triggerDevices[0]['pluginDevice']['triggers'][0]['type'] == 'int' ? '=' : ''
     });
     setState(() {
       conditions = conditions;
@@ -333,6 +333,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                           conditions[i]['deviceName'] = device['name'];
                           conditions[i]['deviceField'] = device['pluginDevice']['triggers'][0]['name'];
                           conditions[i]['deviceValue'] = null;
+                          conditions[i]['deviceValueOperator'] = device['pluginDevice']['triggers'][0]['type'] == 'int' ? '=' : '';
                         });
                       },
                     ),
@@ -352,9 +353,11 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                         );
                       }).toList(),
                       onChanged: (value) {
+                        var device = triggerDevices.firstWhere((device) => device['id'] == condition['deviceId']);
                         setState(() {
                           conditions[i]['deviceField'] = value;
                           conditions[i]['deviceValue'] = null;
+                          conditions[i]['deviceValueOperator'] = device['pluginDevice']['triggers'].firstWhere((trigger) => trigger['name'] == value)['type'] == 'int' ? '=' : '';
                         });
                       },
                     ),
@@ -491,7 +494,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                         _scaffoldKey.currentState.showSnackBar(snackBar);
                         return;
                       }
-                      Navigator.pop(context);
+                      // Navigator.pop(context);
                     },
                     child: Text(
                       'Add',
