@@ -1,5 +1,5 @@
 name: casa
-description: A new Flutter project.
+description: Smart home automations.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -29,11 +29,19 @@ dependencies:
   build_runner: ^1.7.1
   connectivity: ^0.4.5+3
   permission_handler: ^4.0.0
+  flutter_launcher_icons: ^0.7.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/launcher/icon.png"
+  image_path_android: "assets/launcher/icon.png"
+  adaptive_icon_background: "assets/launcher/background.png"
+  adaptive_icon_foreground: "assets/launcher/foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -49,11 +57,11 @@ flutter:
   fonts:
     - family: Manjari
       fonts:
-        - asset: fonts/Manjari-Regular.ttf
+        - asset: assets/fonts/Manjari-Regular.ttf
           weight: 400
-        - asset: fonts/Manjari-Thin.ttf
+        - asset: assets/fonts/Manjari-Thin.ttf
           weight: 100
-        - asset: fonts/Manjari-Bold.ttf
+        - asset: assets/fonts/Manjari-Bold.ttf
           weight: 700
 
   # To add assets to your application, add an assets section, like this:

@@ -68,6 +68,14 @@ class _SelectAutomationsPageState extends State<SelectAutomationsPage> {
                       child: CircularProgressIndicator()
                     );
                   }
+
+                  if (projectSnap.data.length == 0) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child: Text('There is no automation')
+                    );
+                  }
+
                   return RefreshIndicator(
                     key: _refreshIndicatorKey,
                     onRefresh: _getAutomations,
