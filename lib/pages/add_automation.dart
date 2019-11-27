@@ -307,21 +307,43 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   StyledTitle('Con_ditions'),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
-                      padding: EdgeInsets.all(0),
-                      child: Icon(MdiIcons.plus),
-                      onPressed: () {
-                        createCondition();
-                        triggerOperators.add("AND");
-                        setState(() {
-                          triggerOperators = triggerOperators;
-                        });
-                      },
-                    )
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 30,
+                        height: 30,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
+                          padding: EdgeInsets.all(0),
+                          child: Icon(MdiIcons.minus),
+                          onPressed: () {
+                            if (conditions.length == 1) return;
+                            conditions.removeLast();
+                            triggerOperators.removeLast();
+                            setState(() {
+                              conditions = conditions;
+                              triggerOperators = triggerOperators;
+                            });
+                          },
+                        )
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
+                          padding: EdgeInsets.all(0),
+                          child: Icon(MdiIcons.plus),
+                          onPressed: () {
+                            createCondition();
+                            triggerOperators.add("AND");
+                            setState(() {
+                              triggerOperators = triggerOperators;
+                            });
+                          },
+                        )
+                      )
+                    ],
                   )
                 ],
               ),
