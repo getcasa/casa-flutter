@@ -558,7 +558,7 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                         _scaffoldKey.currentState.showSnackBar(snackBar);
                         return;
                       }
-                      // Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                     child: Text(
                       'Add',
