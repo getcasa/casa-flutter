@@ -434,18 +434,39 @@ class _AddAutomationPageState extends State<AddAutomationPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   StyledTitle('Act_ions'),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
-                      padding: EdgeInsets.all(0),
-                      child: Icon(MdiIcons.plus),
-                      onPressed: () {
-                        createAction();
-                      },
-                    )
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 30,
+                        height: 30,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
+                          padding: EdgeInsets.all(0),
+                          child: Icon(MdiIcons.minus),
+                          onPressed: () {
+                            if (actions.length == 1) return;
+                            actions.removeLast();
+                            setState(() {
+                              actions = actions;
+                            });
+                          },
+                        )
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
+                          padding: EdgeInsets.all(0),
+                          child: Icon(MdiIcons.plus),
+                          onPressed: () {
+                            createAction();
+                          },
+                        )
+                      )
+                    ],
                   )
+                  
                 ],
               ),
             ),
