@@ -25,6 +25,34 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> editAutomation(String homeId, String automationId, dynamic body) async {
+    var completer = new Completer();
+    var response;
+  
+    try {
+      response = await http.put(
+        'http://' + apiIP + '/v1/homes/' + homeId + '/automations/' + automationId,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.contentTypeHeader: 'application/json'
+        },
+        body: json.encode(body)
+      );
+    } catch (e) {
+      completer.completeError(e);
+      return completer.future;
+    }
+
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> deleteAutomation(String homeId, String automationId) async {
     var completer = new Completer();
     var response;

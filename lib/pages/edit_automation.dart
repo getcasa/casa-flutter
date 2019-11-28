@@ -94,7 +94,7 @@ class _EditAutomationPageState extends State<EditAutomationPage> {
                         "name": automationNameController.text
                       };
                       try {
-                        await request.addAutomation(widget.homeId, body);
+                        await request.editAutomation(widget.homeId, widget.automation['id'], body);
                       } catch (e) {
                         final snackBar = SnackBar(content: Text(e));
                         _scaffoldKey.currentState.showSnackBar(snackBar);
