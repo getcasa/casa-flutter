@@ -25,6 +25,25 @@ class Request {
 
   Request._internal();
 
+  Future<dynamic> deleteAutomation(String homeId, String automationId) async {
+    var completer = new Completer();
+    var response = await http.delete(
+      'http://' + apiIP + '/v1/homes/' + homeId + '/automations/' + automationId,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer '+token,
+        HttpHeaders.contentTypeHeader: 'application/json'
+      }
+    );
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> addAutomation(String homeId, dynamic body) async {
     var completer = new Completer();
     var response = await http.post(
