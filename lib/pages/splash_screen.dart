@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     request.init().then((conf) async {
-      if (request.apiIP == null || request.apiIP == '') {
+      if (request.ips == null || request.ips.length == 0 || request.selectedEnv == null || request.selectedEnv > request.ips.length + 1) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => APISettings()),
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
 
-      if (request.token == null || request.token == '') {
+      if (request.tokens == null || request.tokens[request.selectedEnv] == null || request.tokens[request.selectedEnv] == '') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),

@@ -137,7 +137,8 @@ class _SignInPageState extends State<SignInPage> {
                           return;
                         }
 
-                        await request.prefs.setString('token', response['message']);
+                        request.tokens[request.selectedEnv] = response['message'];
+                        await request.prefs.setStringList('tokens', request.tokens);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => SplashScreen()),

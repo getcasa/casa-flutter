@@ -9,8 +9,9 @@ import 'dart:convert';
 class Request {
   static final Request _singleton = new Request._internal();
   SharedPreferences prefs;
-  String token;
-  String apiIP;
+  List<String> tokens;
+  List<String> ips;
+  int selectedEnv;
 
   factory Request() {
     return _singleton;
@@ -18,8 +19,9 @@ class Request {
 
   Future<Null> init() async {
     prefs = await SharedPreferences.getInstance();
-    token = prefs.getString('token');
-    apiIP = prefs.getString('apiIP');
+    tokens = prefs.getStringList('tokens') != null ? prefs.getStringList('tokens') : [];
+    ips = prefs.getStringList('ips') != null ? prefs.getStringList('ips') : [];
+    selectedEnv = prefs.getInt('selectedEnv') != null ? prefs.getInt('selectedEnv') : 0;
     return;
   }
 
@@ -31,9 +33,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/automations/' + automationId,
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/automations/' + automationId,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -59,9 +61,9 @@ class Request {
   
     try {
       response = await http.delete(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/automations/' + automationId,
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/automations/' + automationId,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]
         }
       );
     } catch (e) {
@@ -85,9 +87,9 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/automations',
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/automations',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -113,8 +115,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/automations',
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/automations',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -137,9 +139,9 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices/' + deviceId + '/actions',
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices/' + deviceId + '/actions',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -165,9 +167,9 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices',
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -193,8 +195,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/gateways/discover/' + pluginName,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/gateways/discover/' + pluginName,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -217,8 +219,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/plugins',
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/plugins',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -241,8 +243,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices',
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -265,8 +267,8 @@ class Request {
   
     try {
       response = await http.delete(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -289,9 +291,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId,
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -317,9 +319,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/members/' + userId,
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/members/' + userId,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -345,8 +347,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms/' + roomId + '/members',
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/members',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -369,9 +371,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/users/' + userId + '/password',
+        'http://' + ips[selectedEnv] + '/v1/users/' + userId + '/password',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -397,9 +399,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/users/' + userId + '/email',
+        'http://' + ips[selectedEnv] + '/v1/users/' + userId + '/email',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -425,9 +427,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/users/' + userId,
+        'http://' + ips[selectedEnv] + '/v1/users/' + userId,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -456,8 +458,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/users/' + userId,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+        'http://' + ips[selectedEnv] + '/v1/users/' + userId,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]},
       );
     } catch (e) {
       completer.completeError(e);
@@ -480,9 +482,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/members/' + userId,
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/members/' + userId,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -508,8 +510,8 @@ class Request {
   
     try {
       response = await http.delete(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/members/' + userId,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/members/' + userId,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]},
       );
     } catch (e) {
       completer.completeError(e);
@@ -532,9 +534,9 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/members',
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/members',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -560,8 +562,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/members',
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/members',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -584,8 +586,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms',
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -608,9 +610,9 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/homes/' + homeId + '/rooms',
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -636,8 +638,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes/' + homeId,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]},
       );
     } catch (e) {
       completer.completeError(e);
@@ -660,8 +662,8 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/v1/homes',
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token},
+        'http://' + ips[selectedEnv] + '/v1/homes',
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]},
       );
     } catch (e) {
       completer.completeError(e);
@@ -684,9 +686,9 @@ class Request {
   
     try {
       response = await http.put(
-        'http://' + apiIP + '/v1/homes/' + homeId,
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId,
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -712,9 +714,9 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/homes',
+        'http://' + ips[selectedEnv] + '/v1/homes',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token,
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv],
           HttpHeaders.contentTypeHeader: 'application/json'
         },
         body: json.encode(body)
@@ -740,8 +742,8 @@ class Request {
   
     try {
       response = await http.delete(
-        'http://' + apiIP + '/v1/homes/' + homeId,
-        headers: {HttpHeaders.authorizationHeader: 'Bearer '+token}
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
       );
     } catch (e) {
       completer.completeError(e);
@@ -764,9 +766,9 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/signout',
+        'http://' + ips[selectedEnv] + '/v1/signout',
         headers: {
-          HttpHeaders.authorizationHeader: 'Bearer '+token
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]
         },
       );
     } catch (e) {
@@ -779,8 +781,9 @@ class Request {
       completer.completeError(parsedJson['message']);
       return completer.future;
     }
-    await prefs.setString("token", "");
-    token = "";
+
+    tokens[selectedEnv] = "";
+    await prefs.setStringList('tokens', tokens);
 
     completer.complete(parsedJson);
     return completer.future;
@@ -792,7 +795,7 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/signup',
+        'http://' + ips[selectedEnv] + '/v1/signup',
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json'
         },
@@ -819,7 +822,7 @@ class Request {
   
     try {
       response = await http.post(
-        'http://' + apiIP + '/v1/signin',
+        'http://' + ips[selectedEnv] + '/v1/signin',
         body: {'email': email, 'password': password}
       );
     } catch (e) {
@@ -843,10 +846,10 @@ class Request {
   
     try {
       response = await http.get(
-        'http://' + apiIP + '/casa'
+        'http://' + ips[selectedEnv] + '/casa'
       );
     } catch (err) {
-      completer.completeError("test");
+      completer.completeError(err);
       return completer.future;
     }
 
