@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => UserSettingsPage()),
                   );
                   break;
-                case "servers":
+                case "app_settings":
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => APISettings()),
@@ -166,8 +166,8 @@ class _HomePageState extends State<HomePage> {
                   child: Text("My account"),
                 ),
                 PopupMenuItem(
-                  value: "servers",
-                  child: Text("Servers"),
+                  value: "app_settings",
+                  child: Text("App settings"),
                 )
               ];
             },
