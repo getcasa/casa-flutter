@@ -131,10 +131,10 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
                               widget.home['id'],
                               userId,
                               {
-                                'read': permissionsOptions[0].toString(),
-                                'write': permissionsOptions[1].toString(),
-                                'manage': permissionsOptions[2].toString(),
-                                'admin': permissionsOptions[3].toString(),
+                                'read': permissionsOptions[0],
+                                'write': permissionsOptions[1],
+                                'manage': permissionsOptions[2],
+                                'admin': permissionsOptions[3],
                               }
                             );
                             
