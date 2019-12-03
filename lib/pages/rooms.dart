@@ -105,6 +105,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                       await request.callAction(widget.homeId, rooms[i]['id'], device['id'], {
                         'action': device['pluginDevice']['defaultAction']
                       });
+                    }, () {
                     });
                   },
                 ),
