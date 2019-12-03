@@ -96,9 +96,10 @@ class _AddDevicePageState extends State<AddDevicePage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           Container(
+            alignment: Alignment.center,
             margin: EdgeInsets.only(top: 20.0),
             child: Material(
               child: FlatButton(
