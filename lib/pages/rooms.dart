@@ -106,6 +106,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                         'action': device['pluginDevice']['defaultAction']
                       });
                     }, () {
+                      
                     });
                   },
                 ),
