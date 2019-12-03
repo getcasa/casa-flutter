@@ -17,6 +17,7 @@ class DiscoveredDevicesPage extends StatefulWidget {
 class _DiscoveredDevicesPageState extends State<DiscoveredDevicesPage> {
   Request request = new Request();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -24,13 +25,21 @@ class _DiscoveredDevicesPageState extends State<DiscoveredDevicesPage> {
   }
 
   Future<dynamic> _getDevices() async {
-    var devices = await request.getDiscoveredDevices(widget.homeId, widget.plugin['name']);
+    var devices;
+    try {
+      devices = await request.getDiscoveredDevices(widget.homeId, widget.plugin['name']);
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+      return [];
+    }
     return devices;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0
@@ -65,6 +74,12 @@ class _DiscoveredDevicesPageState extends State<DiscoveredDevicesPage> {
                     return Container(
                       alignment: Alignment.center,
                       child: CircularProgressIndicator()
+                    );
+                  }
+                  if (projectSnap.data.length == 0) {
+                    return Container(
+                      alignment: Alignment.center,
+                      child: Text('No devices found')
                     );
                   }
                   return RefreshIndicator(
