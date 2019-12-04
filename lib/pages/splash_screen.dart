@@ -69,9 +69,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).accentColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: null,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              MdiIcons.settings,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => APISettings()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Container(
         alignment: Alignment.center,
-        color: Theme.of(context).accentColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -86,6 +105,21 @@ class _SplashScreenState extends State<SplashScreen> {
               child: CircularProgressIndicator(
                 backgroundColor: Colors.white,
                 strokeWidth: 4,
+              )
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: (request.ips.length > 0) ? Text(
+                'Connecting to ' + request.ips[request.selectedEnv] + '...',
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              )
+              : Text(
+                'Loading...',
+                style: TextStyle(
+                  color: Colors.white
+                )
               )
             )
           ],
