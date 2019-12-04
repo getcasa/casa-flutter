@@ -1,4 +1,5 @@
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/pages/add_device.dart';
 import 'package:casa/pages/discovered_devices.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
@@ -16,6 +17,7 @@ class SelectPluginPage extends StatefulWidget {
 class _SelectPluginPageState extends State<SelectPluginPage> {
   Request request = new Request();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -30,6 +32,7 @@ class _SelectPluginPageState extends State<SelectPluginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0
@@ -79,6 +82,11 @@ class _SelectPluginPageState extends State<SelectPluginPage> {
                             title: Text(plugin['name']),
                             subtitle: Text(plugin['description']),
                             onTap: () {
+                              if (plugin['discover'] == null || plugin['discover'] == false) {
+                                final snackBar = SnackBar(content: Text('The plugin ' + plugin['name'] + ' is actually not supported'));
+                                _scaffoldKey.currentState.showSnackBar(snackBar);
+                                return;
+                              }
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => DiscoveredDevicesPage(homeId: widget.homeId, rooms: widget.rooms, plugin: plugin)),
