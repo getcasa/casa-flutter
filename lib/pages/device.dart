@@ -12,12 +12,16 @@ class DevicePage extends StatefulWidget {
   const DevicePage({Key key, this.homeId, this.roomId, this.device}): super(key: key);
 }
 
-class _DevicePageState extends State<DevicePage> {
+class _DevicePageState extends State<DevicePage> with SingleTickerProviderStateMixin {
   Request request = new Request();
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _tabController = TabController(vsync: this, length: widget.device['pluginActions'].length);
+    });
   }
 
   @override
@@ -36,11 +40,21 @@ class _DevicePageState extends State<DevicePage> {
           ),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          Text('data')
-        ],
-      )
+      body: DefaultTabController(
+        length: widget.device['pluginActions'].length,
+        child: TabBarView(
+          controller: _tabController,
+          children: List<Widget>.generate(widget.device['pluginActions'].length, (int index) {
+            var action = widget.device['pluginActions'][index];
+
+            return ListView(
+              children: <Widget>[
+                Text(action['name'])
+              ]
+            );
+          }),
+        ),
+      ),
     );
   }
 }

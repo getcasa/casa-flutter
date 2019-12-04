@@ -1,6 +1,7 @@
 import 'package:casa/components/device_box.dart';
 import 'package:casa/components/dialog.dart';
 import 'package:casa/components/styled_components.dart';
+import 'package:casa/pages/device.dart';
 import 'package:casa/pages/room_settings.dart';
 import 'package:casa/pages/select_plugin.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +107,10 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                         'action': device['pluginDevice']['defaultAction']
                       });
                     }, () {
-                      
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DevicePage(homeId: widget.homeId, roomId: device['roomId'], device: device)),
+                      );
                     });
                   },
                 ),
