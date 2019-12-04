@@ -109,7 +109,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Container(
               margin: EdgeInsets.only(top: 10),
-              child: (request.ips.length > 0) ? Text(
+              child: (request.ips != null && request.ips.length > 0) ? Text(
                 'Connecting to ' + request.ips[request.selectedEnv] + '...',
                 style: TextStyle(
                   color: Colors.white
