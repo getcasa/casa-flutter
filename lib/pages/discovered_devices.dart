@@ -89,10 +89,11 @@ class _DiscoveredDevicesPageState extends State<DiscoveredDevicesPage> {
                       itemCount: projectSnap.data.length,
                       itemBuilder: (context, index) {
                         var device = projectSnap.data[index];
+                        print(device["name"].length);
                         return Container(
                           margin: EdgeInsets.only(bottom: 5),
                           child: ListTile(
-                            title: Text(device['physicalName']),
+                            title: Text(device['name'] != null && device['name'].length > 0 ? device['name'] + (device['physicalName'] != "" ? " (" +  device['physicalName']  + ")" : "") : device['physicalName']),
                             subtitle: Text(device['physicalId']),
                             onTap: () {
                               Navigator.push(
