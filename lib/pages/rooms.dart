@@ -23,6 +23,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
   List<dynamic> rooms = [];
   String roomName = '';
   TabController _tabController;
+  dynamic devicesState = {};
 
   @override
   void initState() {
@@ -43,8 +44,17 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
     for (var i = 0; i < _rooms.length; i++) {
       var devices = await request.getDevices(widget.homeId, _rooms[i]['id']);
       _rooms[i]['devices'] = devices;
+      for (var j = 0; j < _rooms[i]['devices'].length; j++) {
+        devicesState[_rooms[i]['devices'][j]['id']] = false;
+        // var datas = await request.getDeviceDatas(widget.homeId, _rooms[i]['id'], _rooms[i]['devices'][j]['id'], 'Power');
+        // if (datas != null && datas.length > 0 && datas[0]['valueStr'] != null) {
+          // devicesState[_rooms[i]['devices'][j]['id']] = (datas[0]['valueStr'] == 'on');
+        // }
+      }
     }
+
     setState(() {
+      devicesState = devicesState;
       rooms = _rooms;
       _tabController = TabController(vsync: this, length: rooms.length);
     });
@@ -101,7 +111,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                   itemBuilder: (BuildContext context, int index) {
                     var device = rooms[i]['devices'][index];
 
-                    return DeviceBox(device['name'], device['icon'], false, () async {
+                    return DeviceBox(device['name'], device['icon'], devicesState[device['id']], () async {
                       if (device['pluginDevice']['defaultAction'] == null || device['pluginDevice']['defaultAction'] == '') return;
                       await request.callAction(widget.homeId, rooms[i]['id'], device['id'], {
                         'action': device['pluginDevice']['defaultAction']

@@ -213,6 +213,30 @@ class Request {
     return completer.future;
   }
 
+  Future<dynamic> getDeviceDatas(String homeId, String roomId, String deviceId, String field) async {
+    var completer = new Completer();
+    var response;
+  
+    try {
+      response = await http.get(
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices/' + deviceId + '/datas?field=' + field,
+        headers: {HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]}
+      );
+    } catch (e) {
+      completer.completeError(e);
+      return completer.future;
+    }
+
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> getAvailablePlugins(String homeId) async {
     var completer = new Completer();
     var response;
