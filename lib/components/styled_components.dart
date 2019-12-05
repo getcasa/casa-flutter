@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
 class StyledTitle extends StatelessWidget {
-  List<String> text;
+  final List<String> text;
 
-  StyledTitle(String _text) {
-    text = _text.split('_');
-  }
+  StyledTitle(String text) : this.text = text.split('_');
 
   @override
   Widget build(BuildContext context) {

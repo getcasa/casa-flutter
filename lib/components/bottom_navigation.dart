@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class BottomNavigation extends StatelessWidget {
-  int navigationIndex;
-  String homeId;
+  final int navigationIndex;
+  final String homeId;
 
-  BottomNavigation(int index, String id) {
-    navigationIndex = index;
-    homeId = id;
-  }
+  BottomNavigation(this.navigationIndex, this.homeId);
 
   @override
   Widget build(BuildContext context) {

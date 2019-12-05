@@ -1,5 +1,4 @@
 import 'package:casa/components/styled_components.dart';
-import 'package:casa/pages/add_device.dart';
 import 'package:casa/pages/discovered_devices.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';

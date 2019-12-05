@@ -2,19 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DeviceBox extends StatelessWidget {
-  Function tapAction;
-  Function longPressAction;
-  String text;
-  bool isClicked;
-  IconData icon;
+  final Function tapAction;
+  final Function longPressAction;
+  final String text;
+  final bool isClicked;
+  final IconData icon;
 
-  DeviceBox(String _text, String _icon, bool _isClicked, Function _tapAction, Function _longPressAction) {
-    tapAction = _tapAction;
-    longPressAction = _longPressAction;
-    text = _text;
-    isClicked = _isClicked;
-    icon = MdiIcons.fromString(_icon) != null ? MdiIcons.fromString(_icon) : MdiIcons.serverMinus;
-  }
+  DeviceBox(this.text, String _icon, this.isClicked, this.tapAction, this.longPressAction) : this.icon = MdiIcons.fromString(_icon) != null ? MdiIcons.fromString(_icon) : MdiIcons.serverMinus;
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +18,42 @@ class DeviceBox extends StatelessWidget {
         onTap: tapAction,
         onLongPress: longPressAction,
         child: Container(
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+          child: Column(
             children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: Text(
-                  text,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: isClicked ? Colors.white : Colors.black,
-                    fontWeight: FontWeight.bold
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      text,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isClicked ? Colors.white : Colors.black,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ),
-                ),
+                  Icon(
+                    icon,
+                    color: isClicked ? Colors.white : Colors.black,
+                  )
+                ]
               ),
-              Icon(
-                icon,
-                color: isClicked ? Colors.white : Colors.black,
+              Row(
+                children: <Widget>[
+                  Text(
+                    "xxx",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: isClicked ? Colors.white : Colors.black,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               )
-            ]
+            ],
           ),
         ),
         borderRadius: BorderRadius.circular(8.0),

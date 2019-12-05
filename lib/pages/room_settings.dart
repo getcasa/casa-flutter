@@ -1,5 +1,4 @@
 import 'package:casa/components/dialog.dart';
-import 'package:casa/pages/home.dart';
 import 'package:casa/components/styled_components.dart';
 import 'package:casa/pages/rooms.dart';
 import 'package:casa/store/store.dart';

@@ -2,7 +2,6 @@ import 'package:casa/pages/signup.dart';
 import 'package:casa/pages/splash_screen.dart';
 import 'package:casa/request.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Define a custom Form widget.
 class SignInPage extends StatefulWidget {
