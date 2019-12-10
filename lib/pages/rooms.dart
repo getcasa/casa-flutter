@@ -20,6 +20,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
   Request request = new Request();
   Dialogs dialogs = new Dialogs();
   List<dynamic> rooms = [];
+  List<dynamic> devicesList = [];
   String roomName = '';
   TabController _tabController;
   dynamic devicesState = {};
@@ -42,6 +43,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
     List<dynamic> _rooms = await _getRooms();
     for (var i = 0; i < _rooms.length; i++) {
       var devices = await request.getDevices(widget.homeId, _rooms[i]['id']);
+      devicesList = [...devicesList, ...devices];
       _rooms[i]['devices'] = devices;
       for (var j = 0; j < _rooms[i]['devices'].length; j++) {
         devicesState[_rooms[i]['devices'][j]['id']] = false;
@@ -100,7 +102,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                 child: GridView.builder(
                   padding: EdgeInsets.all(20.0),
                   shrinkWrap: true,
-                  itemCount: rooms[i]['devices'].length,
+                  itemCount: devicesList.where((dev) => dev['roomId'] == room['id']).toList().length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 3.0,
@@ -108,19 +110,21 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                     mainAxisSpacing: 20.0
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    var device = rooms[i]['devices'][index];
-
+                    var filteredDevices = devicesList.where((dev) => dev['roomId'] == room['id']).toList();
+                    var device = devicesList.where((dev) => dev['id'] == filteredDevices[index]['id']).toList()[0];
+                      
                     return DeviceBox(device['name'], device['icon'], devicesState[device['id']], () async {
-                      if (device['pluginDevice']['defaultAction'] == null || device['pluginDevice']['defaultAction'] == '') return;
-                      await request.callAction(widget.homeId, rooms[i]['id'], device['id'], {
-                        'action': device['pluginDevice']['defaultAction']
-                      });
+                    if (device['pluginDevice']['defaultAction'] == null || device['pluginDevice']['defaultAction'] == '') return;
+                    await request.callAction(widget.homeId, room['id'], device['id'], {
+                      'action': device['pluginDevice']['defaultAction']
+                    });
                     }, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => DevicePage(homeId: widget.homeId, roomId: device['roomId'], device: device)),
+                        MaterialPageRoute(builder: (context) => DevicePage(homeId: widget.homeId, device: device)),
                       );
                     });
+
                   },
                 ),
               )

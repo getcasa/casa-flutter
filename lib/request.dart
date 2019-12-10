@@ -55,6 +55,34 @@ class Request {
     return completer.future;
   }
 
+  Future<dynamic> editDevice(String homeId, String roomId, String deviceId, dynamic body) async {
+    var completer = new Completer();
+    var response;
+  
+    try {
+      response = await http.put(
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices/' + deviceId,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer ' + tokens[selectedEnv],
+          HttpHeaders.contentTypeHeader: 'application/json'
+        },
+        body: json.encode(body)
+      );
+    } catch (e) {
+      completer.completeError(e);
+      return completer.future;
+    }
+
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
   Future<dynamic> deleteAutomation(String homeId, String automationId) async {
     var completer = new Completer();
     var response;
@@ -62,6 +90,32 @@ class Request {
     try {
       response = await http.delete(
         'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/automations/' + automationId,
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]
+        }
+      );
+    } catch (e) {
+      completer.completeError(e);
+      return completer.future;
+    }
+
+    var parsedJson = json.decode(response.body);
+    if (response.statusCode != 200) {
+      completer.completeError(parsedJson['message']);
+      return completer.future;
+    }
+
+    completer.complete(parsedJson);
+    return completer.future;
+  }
+
+    Future<dynamic> deleteDevice(String homeId, String roomId, String deviceId) async {
+    var completer = new Completer();
+    var response;
+  
+    try {
+      response = await http.delete(
+        'http://' + ips[selectedEnv] + '/v1/homes/' + homeId + '/rooms/' + roomId + '/devices/' + deviceId,
         headers: {
           HttpHeaders.authorizationHeader: 'Bearer '+tokens[selectedEnv]
         }

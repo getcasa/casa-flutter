@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
+import 'package:casa/pages/edit_device.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DevicePage extends StatefulWidget {
@@ -7,9 +8,8 @@ class DevicePage extends StatefulWidget {
   _DevicePageState createState() => _DevicePageState();
 
   final dynamic homeId;
-  final dynamic roomId;
   final dynamic device;
-  const DevicePage({Key key, this.homeId, this.roomId, this.device}): super(key: key);
+  const DevicePage({Key key, this.homeId, this.device}): super(key: key);
 }
 
 class _DevicePageState extends State<DevicePage> with SingleTickerProviderStateMixin {
@@ -36,6 +36,10 @@ class _DevicePageState extends State<DevicePage> with SingleTickerProviderStateM
               MdiIcons.settingsOutline,
             ),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditDevicePage(homeId: widget.homeId, device: widget.device)),
+              );
             },
           ),
         ],
