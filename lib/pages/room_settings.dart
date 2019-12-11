@@ -1,5 +1,5 @@
 import 'package:casa/components/dialog.dart';
-import 'package:casa/components/styled_components.dart';
+import 'package:casa/components/edit_title.dart';
 import 'package:casa/pages/rooms.dart';
 import 'package:casa/store/store.dart';
 import 'package:flutter/material.dart';
@@ -165,15 +165,11 @@ class _RoomSettingsPageState extends State<RoomSettingsPage> {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 20.0, right: 20.0),
         child: Column(
           children: <Widget>[
+            EditTitle('Set_tings'),
             Container(
-              margin: EdgeInsets.only(top: 20.0),
-              alignment: Alignment.centerLeft,
-              child: StyledTitle('Set_tings')
-            ),
-            Container(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
               margin: EdgeInsets.only(top: 20.0),
               child: Material(
                 child: Padding(
@@ -192,6 +188,7 @@ class _RoomSettingsPageState extends State<RoomSettingsPage> {
               ),
             ),
             Container(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
               margin: EdgeInsets.only(top: 10.0),
               alignment: Alignment.centerRight,
               child: Container(
@@ -229,16 +226,7 @@ class _RoomSettingsPageState extends State<RoomSettingsPage> {
                 ),
               )
             ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              alignment: Alignment.centerLeft,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  StyledTitle('Mem_bers')
-                ],
-              )
-            ),
+            EditTitle('Mem_bers'),
             Flexible(
               flex: 1,
               child: Container(

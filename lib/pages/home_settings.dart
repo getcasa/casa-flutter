@@ -1,4 +1,5 @@
 import 'package:casa/components/dialog.dart';
+import 'package:casa/components/edit_title.dart';
 import 'package:casa/pages/home.dart';
 import 'package:casa/components/styled_components.dart';
 import 'package:casa/store/store.dart';
@@ -190,11 +191,7 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
       ),
       body: ListView(
         children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
-            alignment: Alignment.centerLeft,
-            child: StyledTitle('Set_tings')
-          ),
+          EditTitle('Set_tings'),
           Container(
             margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
             child: Material(
@@ -271,13 +268,13 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
             )
           ),
           Container(
-            margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
             alignment: Alignment.centerLeft,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                StyledTitle('Mem_bers'),
+                EditTitle('Mem_bers'),
                 Container(
+                  margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
                   width: 30,
                   height: 30,
                   child: FlatButton(
