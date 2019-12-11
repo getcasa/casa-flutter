@@ -188,216 +188,208 @@ class _HomeSettingsPageState extends State<HomeSettingsPage> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 20.0, right: 20.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              alignment: Alignment.centerLeft,
-              child: StyledTitle('Set_tings')
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              child: Material(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-                  child: TextField(
-                    controller: homeNameController,
-                    decoration: InputDecoration(
-                      hintText: 'Name',
-                      border: InputBorder.none,
-                    ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
+            alignment: Alignment.centerLeft,
+            child: StyledTitle('Set_tings')
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
+            child: Material(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+                child: TextField(
+                  controller: homeNameController,
+                  decoration: InputDecoration(
+                    hintText: 'Name',
+                    border: InputBorder.none,
                   ),
                 ),
-                elevation: 20.0,
-                shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
               ),
+              elevation: 20.0,
+              shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10.0),
-              child: Material(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-                  child: TextField(
-                    controller: homeAddressController,
-                    decoration: InputDecoration(
-                      hintText: 'Address',
-                      border: InputBorder.none,
-                    ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10.0, left: 20, right: 20),
+            child: Material(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+                child: TextField(
+                  controller: homeAddressController,
+                  decoration: InputDecoration(
+                    hintText: 'Address',
+                    border: InputBorder.none,
                   ),
                 ),
-                elevation: 20.0,
-                shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
               ),
+              elevation: 20.0,
+              shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 10.0),
-              alignment: Alignment.centerRight,
-              child: Container(
-                height: 45,
-                child: Material(
-                  child: FlatButton(
-                    padding: EdgeInsets.only(top: 4.0),
-                    onPressed: () async {
-                      var response;
-                        try {
-                          response = await request.editHome(widget.home['id'], {
-                            'name': homeNameController.text,
-                            'address': homeAddressController.text
-                          });
-                        } catch (e) {
-                          final snackBar = SnackBar(content: Text(e));
-                          _scaffoldKey.currentState.showSnackBar(snackBar);
-                          return;
-                        }
-                        final snackBar = SnackBar(content: Text(response['message']));
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10.0, left: 20, right: 20),
+            alignment: Alignment.centerRight,
+            child: Container(
+              height: 45,
+              child: Material(
+                child: FlatButton(
+                  padding: EdgeInsets.only(top: 4.0),
+                  onPressed: () async {
+                    var response;
+                      try {
+                        response = await request.editHome(widget.home['id'], {
+                          'name': homeNameController.text,
+                          'address': homeAddressController.text
+                        });
+                      } catch (e) {
+                        final snackBar = SnackBar(content: Text(e));
                         _scaffoldKey.currentState.showSnackBar(snackBar);
-                    },
-                    child: Text(
-                      'Save',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white
-                      )
-                    ),
-                    shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                  ),
-                  color: Theme.of(context).accentColor,
-                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                  elevation: 20.0,
-                  shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
-                ),
-              )
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              alignment: Alignment.centerLeft,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  StyledTitle('Mem_bers'),
-                  Container(
-                    width: 30,
-                    height: 30,
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
-                      padding: EdgeInsets.all(0),
-                      child: Icon(Icons.add),
-                      onPressed: () {
-                        dialogs.input(context, 'Add a member', 'Email', _addHomeMember);
-                      },
-                    )
-                  )
-                ],
-              )
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(
-                margin: EdgeInsets.only(top: 20.0),
-                height: double.infinity,
-                child: FutureBuilder(
-                  future: _getHomeMembers(),
-                  builder: (context, projectSnap) {
-                    if (projectSnap == null || projectSnap.data == null) {
-                      return CircularProgressIndicator();
-                    }
-                    return ListView.builder(
-                      itemCount: projectSnap.data.length,
-                      itemBuilder: (context, index) {
-                        var user = projectSnap.data[index];
-                        var gravatar = Gravatar(user['email']);
-                        var url = gravatar.imageUrl(
-                          size: 100,
-                          defaultImage: GravatarImage.retro,
-                          rating: GravatarRating.pg,
-                          fileExtension: true,
-                        );
-
-                        var isOwner = user['id'] == widget.home['creator']['id'];
-                        var isMe = user['id'] == store.user.id;
-                        var borderColor = isOwner ? Theme.of(context).accentColor : Colors.transparent;
-
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 5),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 27,
-                              backgroundColor: borderColor,
-                              child: CircleAvatar(
-                                radius: 25,
-                                backgroundImage: NetworkImage(url),
-                              ),
-                            ),
-                            title: Text(
-                              user['firstname'] + ' ' + user['lastname'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            trailing: !isOwner && !isMe ? PopupMenuButton(
-                              onSelected: (select) {
-                                switch (select) {
-                                  case 'edit':
-                                    var options = [
-                                      {
-                                        'name': 'read',
-                                        'value': user['read']
-                                      },
-                                      {
-                                        'name': 'write',
-                                        'value': user['write']
-                                      },
-                                      {
-                                        'name': 'manage',
-                                        'value': user['manage']
-                                      },
-                                      {
-                                        'name': 'admin',
-                                        'value': user['admin']
-                                      }
-                                    ];
-                                    showEditPermissionsModal(user['id'], options);
-                                    break;
-                                  case 'remove':
-                                    dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {
-                                      await _removeHomeMember(user['id']);
-                                    });
-                                    break;
-                                  default:
-                                }
-                              },
-                              itemBuilder: (BuildContext context) {
-                                return [
-                                  PopupMenuItem(
-                                    value: 'edit',
-                                    child: Text('Edit'),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 'remove',
-                                    child: Text(
-                                      'Remove',
-                                      style: TextStyle(
-                                        color: Colors.red
-                                      ),
-                                    ),
-                                  )
-                                ];
-                              },
-                            ) : null
-                          )
-                        );
-                      },
-                    );
+                        return;
+                      }
+                      final snackBar = SnackBar(content: Text(response['message']));
+                      _scaffoldKey.currentState.showSnackBar(snackBar);
                   },
+                  child: Text(
+                    'Save',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white
+                    )
+                  ),
+                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
                 ),
-              )
+                color: Theme.of(context).accentColor,
+                shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                elevation: 20.0,
+                shadowColor: Color.fromRGBO(0, 0, 0, 0.4),
+              ),
             )
-          ],
-        )
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
+            alignment: Alignment.centerLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                StyledTitle('Mem_bers'),
+                Container(
+                  width: 30,
+                  height: 30,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20)),
+                    padding: EdgeInsets.all(0),
+                    child: Icon(Icons.add),
+                    onPressed: () {
+                      dialogs.input(context, 'Add a member', 'Email', _addHomeMember);
+                    },
+                  )
+                )
+              ],
+            )
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20.0, left: 20, right: 20),
+            child: FutureBuilder(
+              future: _getHomeMembers(),
+              builder: (context, projectSnap) {
+                if (projectSnap == null || projectSnap.data == null) {
+                  return CircularProgressIndicator();
+                }
+                return Column(
+                  children: List<Widget>.generate(projectSnap.data.length, (index) {
+                    var user = projectSnap.data[index];
+                    var gravatar = Gravatar(user['email']);
+                    var url = gravatar.imageUrl(
+                      size: 100,
+                      defaultImage: GravatarImage.retro,
+                      rating: GravatarRating.pg,
+                      fileExtension: true,
+                    );
+
+                    var isOwner = user['id'] == widget.home['creator']['id'];
+                    var isMe = user['id'] == store.user.id;
+                    var borderColor = isOwner ? Theme.of(context).accentColor : Colors.transparent;
+
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 27,
+                          backgroundColor: borderColor,
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundImage: NetworkImage(url),
+                          ),
+                        ),
+                        title: Text(
+                          user['firstname'] + ' ' + user['lastname'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        trailing: !isOwner && !isMe ? PopupMenuButton(
+                          onSelected: (select) {
+                            switch (select) {
+                              case 'edit':
+                                var options = [
+                                  {
+                                    'name': 'read',
+                                    'value': user['read']
+                                  },
+                                  {
+                                    'name': 'write',
+                                    'value': user['write']
+                                  },
+                                  {
+                                    'name': 'manage',
+                                    'value': user['manage']
+                                  },
+                                  {
+                                    'name': 'admin',
+                                    'value': user['admin']
+                                  }
+                                ];
+                                showEditPermissionsModal(user['id'], options);
+                                break;
+                              case 'remove':
+                                dialogs.confirm(context, "You really want to remove " + user['firstname'] + " from your home?", () async {
+                                  await _removeHomeMember(user['id']);
+                                });
+                                break;
+                              default:
+                            }
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return [
+                              PopupMenuItem(
+                                value: 'edit',
+                                child: Text('Edit'),
+                              ),
+                              PopupMenuItem(
+                                value: 'remove',
+                                child: Text(
+                                  'Remove',
+                                  style: TextStyle(
+                                    color: Colors.red
+                                  ),
+                                ),
+                              )
+                            ];
+                          },
+                        ) : null
+                      )
+                    );
+                  })
+                );
+              },
+            ),
+          )
+        ],
       )
     );
   }
