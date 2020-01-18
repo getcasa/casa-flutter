@@ -22,6 +22,7 @@ class Request {
     tokens = prefs.getStringList('tokens') != null ? prefs.getStringList('tokens') : [];
     ips = prefs.getStringList('ips') != null ? prefs.getStringList('ips') : [];
     selectedEnv = prefs.getInt('selectedEnv') != null ? prefs.getInt('selectedEnv') : 0;
+
     return;
   }
 
@@ -710,6 +711,7 @@ class Request {
   }
 
   Future<dynamic> getRooms(String homeId) async {
+
     var completer = new Completer();
     var response;
   

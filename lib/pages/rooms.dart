@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:casa/components/device_box.dart';
 import 'package:casa/components/dialog.dart';
 import 'package:casa/components/styled_components.dart';
 import 'package:casa/pages/device.dart';
 import 'package:casa/pages/room_settings.dart';
 import 'package:casa/pages/select_plugin.dart';
+import 'package:casa/structs.dart';
 import 'package:flutter/material.dart';
 import 'package:casa/request.dart';
 import 'package:casa/components/bottom_navigation.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket_channel/io.dart';
 
 class RoomsPage extends StatefulWidget {
   @override
@@ -24,11 +29,49 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
   String roomName = '';
   TabController _tabController;
   dynamic devicesState = {};
+  IOWebSocketChannel channel;
 
   @override
   void initState() {
     super.initState();
     getRooms();
+    channel = IOWebSocketChannel.connect('ws://' + request.ips[request.selectedEnv] + '/v1/ws/client');
+
+    channel.stream.listen(
+      (message){
+        var parsedJson = json.decode(message);
+        var _websocketMessage = WebsocketMessage();
+        _websocketMessage.action = parsedJson['Action'];
+        _websocketMessage.body = utf8.decode(base64.decode(parsedJson['Body']));
+
+
+        switch (_websocketMessage.action) {
+          case "getLog":
+            var body = json.decode(_websocketMessage.body);
+            var device = devicesList.where((dev) => dev['id'] == body['deviceId']).toList()[0];
+            var triggerInfo = device['pluginDevice']['triggers'].where((trig) => trig['name'] == body['field']).toList()[0];
+
+            switch (triggerInfo['type']) {
+              case "string":
+                device['status'] = body['valueStr'];
+                break;
+              case "int":
+                device['status'] = body['valueNbr'].toStringAsFixed(2);
+                break;
+              case "bool":
+                device['status'] = body['valueBool'];
+                break;
+              default:
+            }
+            device['status'] += ' - ' + body['createdAt'];
+            setState(() {
+              devicesList = devicesList;
+            });
+            break;
+          default:
+        }
+      },
+    );
   }
 
   @override
@@ -45,17 +88,19 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
       var devices = await request.getDevices(widget.homeId, _rooms[i]['id']);
       devicesList = [...devicesList, ...devices];
       _rooms[i]['devices'] = devices;
-      for (var j = 0; j < _rooms[i]['devices'].length; j++) {
-        devicesState[_rooms[i]['devices'][j]['id']] = false;
+    }
+    for (var j = 0; j < devicesList.length; j++) {
+        devicesList[j]['state'] = false;
+        devicesList[j]['status'] = "";
+        channel.sink.add('{"Action":"getLog","Body":"' + base64.encode((utf8.encode(devicesList[j]['id']))) + '"}');
         // var datas = await request.getDeviceDatas(widget.homeId, _rooms[i]['id'], _rooms[i]['devices'][j]['id'], 'Power');
         // if (datas != null && datas.length > 0 && datas[0]['valueStr'] != null) {
           // devicesState[_rooms[i]['devices'][j]['id']] = (datas[0]['valueStr'] == 'on');
         // }
       }
-    }
 
     setState(() {
-      devicesState = devicesState;
+      devicesList = devicesList;
       rooms = _rooms;
       _tabController = TabController(vsync: this, length: rooms.length);
     });
@@ -113,7 +158,7 @@ class _RoomsPageState extends State<RoomsPage> with TickerProviderStateMixin {
                     var filteredDevices = devicesList.where((dev) => dev['roomId'] == room['id']).toList();
                     var device = devicesList.where((dev) => dev['id'] == filteredDevices[index]['id']).toList()[0];
                       
-                    return DeviceBox(device['name'], device['icon'], devicesState[device['id']], () async {
+                    return DeviceBox(device['name'], device['icon'], device['state'], device['status'], () async {
                     if (device['pluginDevice']['defaultAction'] == null || device['pluginDevice']['defaultAction'] == '') return;
                     await request.callAction(widget.homeId, room['id'], device['id'], {
                       'action': device['pluginDevice']['defaultAction']

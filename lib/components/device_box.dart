@@ -6,9 +6,10 @@ class DeviceBox extends StatelessWidget {
   final Function longPressAction;
   final String text;
   final bool isClicked;
+  final String status;
   final IconData icon;
 
-  DeviceBox(this.text, String _icon, this.isClicked, this.tapAction, this.longPressAction) : this.icon = MdiIcons.fromString(_icon) != null ? MdiIcons.fromString(_icon) : MdiIcons.serverMinus;
+  DeviceBox(this.text, String _icon, this.isClicked, this.status, this.tapAction, this.longPressAction) : this.icon = MdiIcons.fromString(_icon) != null ? MdiIcons.fromString(_icon) : MdiIcons.serverMinus;
 
 
   @override
@@ -42,13 +43,17 @@ class DeviceBox extends StatelessWidget {
                 ]
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    "xxx",
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: isClicked ? Colors.white : Colors.black,
-                      fontSize: 12,
+                  Expanded(
+                    child: Text(
+                      status,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isClicked ? Colors.white : Colors.black,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],

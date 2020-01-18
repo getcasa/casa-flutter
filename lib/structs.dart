@@ -85,3 +85,8 @@ class Permission {
   int admin;
   String updatedAt;
 }
+
+class WebsocketMessage {
+  String action;
+  String body;
+}
