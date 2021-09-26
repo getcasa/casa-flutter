@@ -20,7 +20,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     request.init().then((conf) async {
-      if (request.ips == null || request.ips.length == 0 || request.selectedEnv == null || request.selectedEnv > request.ips.length + 1) {
+      if (request.ips == null ||
+          request.ips.length == 0 ||
+          request.selectedEnv == null ||
+          request.selectedEnv > request.ips.length + 1) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => APISettings()),
@@ -38,7 +41,9 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
 
-      if (request.tokens == null || request.tokens[request.selectedEnv] == null || request.tokens[request.selectedEnv] == '') {
+      if (request.tokens == null ||
+          request.tokens[request.selectedEnv] == null ||
+          request.tokens[request.selectedEnv] == '') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),
@@ -77,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              MdiIcons.settings,
+              MdiIcons.eyeSettings,
               color: Colors.white,
             ),
             onPressed: () {
@@ -90,41 +95,35 @@ class _SplashScreenState extends State<SplashScreen> {
         ],
       ),
       body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              MdiIcons.homeOutline,
-              size: 60,
-              color: Colors.white,
-            ),
-            SizedBox(
-              height: 30.0,
-              width: 30.0,
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                strokeWidth: 4,
-              )
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: (request.ips != null && request.ips.length > 0) ? Text(
-                'Connecting to ' + request.ips[request.selectedEnv] + '...',
-                style: TextStyle(
-                  color: Colors.white
-                ),
-              )
-              : Text(
-                'Loading...',
-                style: TextStyle(
-                  color: Colors.white
-                )
-              )
-            )
-          ],
-        )
-      ),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                MdiIcons.homeOutline,
+                size: 60,
+                color: Colors.white,
+              ),
+              SizedBox(
+                  height: 30.0,
+                  width: 30.0,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    strokeWidth: 4,
+                  )),
+              Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: (request.ips != null && request.ips.length > 0)
+                      ? Text(
+                          'Connecting to ' +
+                              request.ips[request.selectedEnv] +
+                              '...',
+                          style: TextStyle(color: Colors.white),
+                        )
+                      : Text('Loading...',
+                          style: TextStyle(color: Colors.white)))
+            ],
+          )),
     );
   }
 }
