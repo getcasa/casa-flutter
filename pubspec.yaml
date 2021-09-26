@@ -19,17 +19,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.0+2
-  shared_preferences: ^0.5.3+4
-  cupertino_icons: ^0.1.2
-  material_design_icons_flutter: ^3.4.4595
+  http: ^0.13.3
+  shared_preferences: ^2.0.8
+  cupertino_icons: ^1.0.3
+  material_design_icons_flutter: ^4.0.5955
   simple_gravatar: ^1.0.5
-  mobx: ^0.3.8+1
-  flutter_mobx: ^0.3.3+1
-  build_runner: ^1.7.1
-  connectivity: ^0.4.5+3
-  permission_handler: ^4.0.0
-  flutter_launcher_icons: ^0.7.4
+  mobx: ^2.0.4
+  flutter_mobx: ^2.0.2
+  build_runner: ^2.1.2
+  connectivity: ^3.0.6
+  permission_handler: ^8.1.6
+  flutter_launcher_icons: ^0.9.2
 
 dev_dependencies:
   flutter_test:
